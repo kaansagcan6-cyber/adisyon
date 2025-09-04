@@ -401,6 +401,23 @@
             document.getElementById('detay').innerHTML = html;
         }
 
+        // Otomatik kaydet
+        function otomatikKaydet() {
+            try {
+                var veri = {
+                    masalar: masalar,
+                    gelenMasaSayisi: gelenMasaSayisi,
+                    toplamCiro: toplamCiro,
+                    sonGuncelleme: new Date().getTime()
+                };
+                
+                localStorage.setItem('restoranVeri', JSON.stringify(veri));
+                console.log('Veri otomatik kaydedildi:', new Date().toLocaleTimeString());
+            } catch(e) {
+                console.error('Otomatik kaydetme hatası:', e);
+            }
+        }
+
         // Sipariş ekle
         function siparisEkle() {
             var urun = document.getElementById('urun').value;
@@ -417,6 +434,7 @@
             masalariCiz();
             masaDetayiGoster();
             sayilariGuncelle();
+            otomatikKaydet(); // Hemen kaydet
         }
 
         // Sipariş sil
@@ -428,6 +446,7 @@
             masalariCiz();
             masaDetayiGoster();
             sayilariGuncelle();
+            otomatikKaydet(); // Hemen kaydet
         }
 
         // Ödeme yapıldı
@@ -442,6 +461,7 @@
             
             masalariCiz();
             sayilariGuncelle();
+            otomatikKaydet(); // Hemen kaydet
         }
 
         // Sayıları güncelle
@@ -469,7 +489,65 @@
         // Sayfa yüklendi
         window.onload = function() {
             console.log('Sayfa yüklendi!');
+            
+            // URL'den veri yüklemeyi kontrol et
+            var urlParams = new URLSearchParams(window.location.search);
+            var veriStr = urlParams.get('data');
+            
+            if (veriStr) {
+                try {
+                    var veri = JSON.parse(decodeURIComponent(veriStr));
+                    masalar = veri.masalar || {};
+                    gelenMasaSayisi = veri.gelenMasaSayisi || 0;
+                    toplamCiro = veri.toplamCiro || 0;
+                    console.log('URL\'den veri yüklendi:', veri);
+                    alert('Veri başarıyla yüklendi! ' + gelenMasaSayisi + ' masa, ₺' + toplamCiro.toFixed(2) + ' ciro');
+                } catch(e) {
+                    console.error('URL veri hatası:', e);
+                    alert('URL\'deki veri bozuk!');
+                }
+            }
+            
+            // Otomatik giriş yap (admin olarak)
+            setTimeout(function() {
+                console.log('Otomatik giriş yapılıyor...');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'block';
+                basla();
+            }, 500);
         };
+
+        // Veri paylaş
+        function veriPaylas() {
+            var veri = {
+                masalar: masalar,
+                gelenMasaSayisi: gelenMasaSayisi,
+                toplamCiro: toplamCiro,
+                tarih: new Date().toLocaleString()
+            };
+            
+            var veriStr = encodeURIComponent(JSON.stringify(veri));
+            var baseUrl = window.location.origin + window.location.pathname;
+            var paylasilacakUrl = baseUrl + '?data=' + veriStr;
+            
+            // URL'i panoya kopyala
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(paylasilacakUrl).then(function() {
+                    alert('✅ Veri linki panoya kopyalandı!\n\nDiğer cihazda bu linki açarak verilerinizi yükleyebilirsiniz.\n\nVeri içeriği:\n• ' + gelenMasaSayisi + ' gelen masa\n• ₺' + toplamCiro.toFixed(2) + ' toplam ciro\n• Aktif siparişler');
+                }).catch(function() {
+                    gosterUrlDialog(paylasilacakUrl);
+                });
+            } else {
+                gosterUrlDialog(paylasilacakUrl);
+            }
+        }
+
+        // URL dialog göster
+        function gosterUrlDialog(url) {
+            var kısaUrl = url.length > 100 ? url.substring(0, 100) + '...' : url;
+            alert('📋 Bu linki kopyalayıp diğer cihazda açın:\n\n' + kısaUrl + '\n\n(Tam linki console\'da görebilirsiniz)');
+            console.log('Paylaşım linki:', url);
+        }
     </script>
 </body>
 </html>
