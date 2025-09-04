@@ -747,32 +747,77 @@
             var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
             var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
             
+            if (veri.siparisler.length === 0) {
+                alert('Sipariş yok!');
+                return;
+            }
+            
             var tarih = new Date().toLocaleDateString('tr-TR');
             var saat = new Date().toLocaleTimeString('tr-TR');
+            var fisNo = Date.now().toString().slice(-6);
             
-            var fisMetni = "=== ADİSYON / HESAP FİŞİ ===\n\n";
-            fisMetni += baslik + "\n";
-            fisMetni += "Tarih: " + tarih + "\n";
-            fisMetni += "Saat: " + saat + "\n";
-            fisMetni += "Fiş No: " + Date.now().toString().slice(-6) + "\n\n";
-            fisMetni += "ÜRÜN ADI                TUTAR\n";
-            fisMetni += "================================\n";
+            // Yeni pencere aç
+            var fisWindow = window.open('', '_blank', 'width=400,height=600');
             
+            var fisHTML = 
+                '<!DOCTYPE html>' +
+                '<html><head><title>Fiş</title>' +
+                '<style>' +
+                'body{font-family:"Courier New",monospace;margin:0;padding:20px;line-height:1.6;}' +
+                '.header{text-align:center;border-bottom:1px solid #000;padding-bottom:1rem;margin-bottom:1rem;}' +
+                '.title{font-size:1.2rem;font-weight:bold;margin-bottom:1rem;text-decoration:underline;}' +
+                '.info{margin-bottom:0.3rem;}' +
+                '.items{border-bottom:1px solid #000;padding-bottom:0.5rem;margin-bottom:1rem;}' +
+                '.item-header{display:flex;justify-content:space-between;font-weight:bold;margin-bottom:0.5rem;}' +
+                '.item{margin-bottom:0.8rem;}' +
+                '.item-name{font-weight:bold;}' +
+                '.item-detail{color:#666;font-size:0.9rem;}' +
+                '.item-note{color:#8b5cf6;font-style:italic;font-size:0.9rem;}' +
+                '.item-price{text-align:right;font-weight:bold;margin-top:0.3rem;}' +
+                '@media print{body{margin:0;padding:10px;}}' +
+                '</style></head><body>' +
+                
+                '<div class="header">' +
+                '<div class="title">ADİSYON / HESAP FİŞİ</div>' +
+                '<div class="info"><strong>' + baslik + '</strong></div>' +
+                '<div class="info"><strong>Tarih:</strong> ' + tarih + '</div>' +
+                '<div class="info"><strong>Saat:</strong> ' + saat + '</div>' +
+                '<div class="info"><strong>Fiş No:</strong> ' + fisNo + '</div>' +
+                '</div>' +
+                
+                '<div class="items">' +
+                '<div class="item-header">' +
+                '<span>ÜRÜN ADI</span>' +
+                '<span>TUTAR</span>' +
+                '</div>';
+            
+            // Siparişleri ekle
             for (var i = 0; i < veri.siparisler.length; i++) {
                 var siparis = veri.siparisler[i];
                 var toplamFiyat = siparis.adet * siparis.birimFiyat;
                 
-                fisMetni += (i + 1) + ". " + siparis.urun + "\n";
-                fisMetni += "   " + siparis.adet + " adet × ₺" + siparis.birimFiyat.toFixed(2) + "\n";
+                fisHTML += '<div class="item">' +
+                          '<div class="item-name">' + (i + 1) + '. ' + siparis.urun + '</div>' +
+                          '<div class="item-detail">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
                 
                 if (siparis.not && siparis.not.trim() !== '') {
-                    fisMetni += "   Not: " + siparis.not + "\n";
+                    fisHTML += '<div class="item-note">Not: ' + siparis.not + '</div>';
                 }
                 
-                fisMetni += "                     ₺" + toplamFiyat.toFixed(2) + "\n\n";
+                fisHTML += '<div class="item-price">₺' + toplamFiyat.toFixed(2) + '</div>' +
+                          '</div>';
             }
             
-            alert(fisMetni);
+            fisHTML += '</div>' +
+                      '</body></html>';
+            
+            fisWindow.document.write(fisHTML);
+            fisWindow.document.close();
+            
+            // Yazdırma
+            setTimeout(function() {
+                fisWindow.print();
+            }, 500);
         }
 
         // İstatistikleri güncelle
