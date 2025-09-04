@@ -1,262 +1,604 @@
-import React, { useState } from 'react';
-import { Plus, Check, X, Edit3 } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restoran Adisyon Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const RestoranAdisyon = () => {
-  // Masalar ve siparişler için state
-  const [masalar, setMasalar] = useState(() => {
-    const initialMasalar = {};
-    for (let i = 1; i <= 12; i++) {
-      initialMasalar[i] = {
-        siparisler: [],
-        toplam: 0,
-        odendi: false
-      };
-    }
-    return initialMasalar;
-  });
-  
-  const [secilenMasa, setSecilenMasa] = useState(null);
-  const [yeniUrun, setYeniUrun] = useState('');
-  const [yeniFiyat, setYeniFiyat] = useState('');
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            padding: 1rem;
+        }
 
-  // Sipariş ekleme
-  const siparisEkle = () => {
-    if (!yeniUrun || !yeniFiyat || !secilenMasa) return;
-    
-    const fiyat = parseFloat(yeniFiyat);
-    if (isNaN(fiyat)) return;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    setMasalar(prev => ({
-      ...prev,
-      [secilenMasa]: {
-        ...prev[secilenMasa],
-        siparisler: [...prev[secilenMasa].siparisler, {
-          id: Date.now(),
-          urun: yeniUrun,
-          fiyat: fiyat
-        }],
-        toplam: prev[secilenMasa].toplam + fiyat
-      }
-    }));
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-    setYeniUrun('');
-    setYeniFiyat('');
-  };
+        .header h1 {
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
 
-  // Sipariş silme
-  const siparisSil = (siparisId) => {
-    const masa = masalar[secilenMasa];
-    const silinecekSiparis = masa.siparisler.find(s => s.id === siparisId);
-    
-    setMasalar(prev => ({
-      ...prev,
-      [secilenMasa]: {
-        ...prev[secilenMasa],
-        siparisler: prev[secilenMasa].siparisler.filter(s => s.id !== siparisId),
-        toplam: prev[secilenMasa].toplam - silinecekSiparis.fiyat
-      }
-    }));
-  };
+        .stats {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-  // Ödeme yapıldı
-  const odemeYapildi = () => {
-    setMasalar(prev => ({
-      ...prev,
-      [secilenMasa]: {
-        siparisler: [],
-        toplam: 0,
-        odendi: false
-      }
-    }));
-    setSecilenMasa(null);
-  };
+        .masa-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
 
-  // Masa renk belirleme
-  const getMasaRenk = (masa) => {
-    if (masa.siparisler.length === 0) {
-      return 'bg-green-100 border-green-300 text-green-800'; // Boş masa
-    }
-    return 'bg-orange-100 border-orange-300 text-orange-800'; // Dolu masa
-  };
+        .masa-label {
+            font-size: 1.125rem;
+            color: #2563eb;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-          🍽️ Restoran Adisyon Sistemi
-        </h1>
+        .ciro-count {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #16a34a;
+            margin-bottom: 0.25rem;
+        }
 
-        {/* İstatistik Kutusu */}
-        <div className="mb-8 bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="text-3xl font-bold text-blue-600 mb-2">
-            {Object.values(masalar).filter(masa => masa.siparisler.length > 0).length}
-          </div>
-          <div className="text-lg text-blue-600 font-medium mb-4">Toplam Gelen Masa</div>
-          
-          <div className="text-2xl font-bold text-green-600 mb-1">
-            ₺{Object.values(masalar).reduce((toplam, masa) => toplam + masa.toplam, 0).toFixed(2)}
-          </div>
-          <div className="text-md text-green-600 font-medium">Toplam Ciro</div>
+        .ciro-label {
+            color: #16a34a;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .masalar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .masa {
+            position: relative;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .masa:hover {
+            transform: scale(1.05);
+        }
+
+        .masa.bos {
+            background-color: #dcfce7;
+            border-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .masa.dolu {
+            background-color: #fed7aa;
+            border-color: #fdba74;
+            color: #9a3412;
+        }
+
+        .masa.secili {
+            ring: 4px;
+            ring-color: #60a5fa;
+            box-shadow: 0 0 0 4px #60a5fa;
+        }
+
+        .masa-no {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .masa-info {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .masa-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .detay-form {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-input {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            outline: none;
+        }
+
+        .form-input:focus {
+            ring: 2px;
+            ring-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-success {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+
+        .btn-danger {
+            background-color: transparent;
+            color: #ef4444;
+            padding: 0.25rem;
+        }
+
+        .btn-danger:hover {
+            color: #dc2626;
+        }
+
+        .btn-close {
+            background-color: transparent;
+            color: #6b7280;
+            padding: 0.25rem;
+        }
+
+        .btn-close:hover {
+            color: #374151;
+        }
+
+        .siparisler {
+            margin-bottom: 1.5rem;
+        }
+
+        .siparis-list {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .siparis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .siparis-urun {
+            font-weight: 500;
+        }
+
+        .siparis-fiyat {
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+        }
+
+        .toplam-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1rem;
+        }
+
+        .toplam-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .toplam-label {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .toplam-miktar {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        .no-siparis {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
+        }
+
+        .info-box {
+            margin-top: 2rem;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-text {
+            font-size: 0.875rem;
+            color: #1e40af;
+            line-height: 1.5;
+        }
+
+        .detay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Restoran Adisyon Sistemi</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Masa Düzeni */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Masalar</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {Object.entries(masalar).map(([masaNo, masa]) => (
-                <button
-                  key={masaNo}
-                  onClick={() => setSecilenMasa(masaNo)}
-                  className={`
-                    relative p-6 rounded-lg border-2 transition-all duration-200 hover:scale-105
-                    ${getMasaRenk(masa)}
-                    ${secilenMasa === masaNo ? 'ring-4 ring-blue-400' : ''}
-                  `}
-                >
-                  <div className="text-center">
-                    <div className="text-lg font-bold">Masa {masaNo}</div>
-                    <div className="text-sm mt-1">
-                      {masa.siparisler.length} ürün
-                    </div>
-                    {masa.toplam > 0 && (
-                      <div className="text-sm font-semibold mt-1">
-                        ₺{masa.toplam.toFixed(2)}
-                      </div>
-                    )}
-                  </div>
-                  {masa.siparisler.length > 0 && (
-                    <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                      {masa.siparisler.length}
-                    </div>
-                  )}
-                </button>
-              ))}
+        <!-- İstatistik Kutusu -->
+        <div class="stats">
+            <div class="masa-count" id="masaCount">0</div>
+            <div class="masa-label">Toplam Gelen Masa</div>
+            
+            <div class="ciro-count" id="ciroCount">₺0.00</div>
+            <div class="ciro-label">Toplam Ciro</div>
+        </div>
+
+        <div class="main-content">
+            <!-- Masa Düzeni -->
+            <div class="section">
+                <h2 class="section-title">Masalar</h2>
+                <div class="masalar-grid" id="masalarGrid">
+                    <!-- Masalar JavaScript ile oluşturulacak -->
+                </div>
             </div>
-          </div>
 
-          {/* Seçilen Masa Detayı */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            {secilenMasa ? (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Masa {secilenMasa} - Adisyon
-                  </h2>
-                  <button
-                    onClick={() => setSecilenMasa(null)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <X size={24} />
-                  </button>
-                </div>
-
-                {/* Sipariş Ekleme Formu */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                  <h3 className="text-lg font-medium mb-3">Yeni Sipariş Ekle</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                    <input
-                      type="text"
-                      placeholder="Ürün adı..."
-                      value={yeniUrun}
-                      onChange={(e) => setYeniUrun(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Fiyat (₺)"
-                      value={yeniFiyat}
-                      onChange={(e) => setYeniFiyat(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <button
-                    onClick={siparisEkle}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
-                  >
-                    <Plus size={20} />
-                    Sipariş Ekle
-                  </button>
-                </div>
-
-                {/* Siparişler Listesi */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium mb-3">Siparişler</h3>
-                  {masalar[secilenMasa].siparisler.length === 0 ? (
-                    <p className="text-gray-500 text-center py-8">
-                      Henüz sipariş eklenmemiş
-                    </p>
-                  ) : (
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {masalar[secilenMasa].siparisler.map((siparis) => (
-                        <div
-                          key={siparis.id}
-                          className="flex justify-between items-center p-3 bg-gray-50 rounded-md"
-                        >
-                          <div>
-                            <span className="font-medium">{siparis.urun}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold">₺{siparis.fiyat.toFixed(2)}</span>
-                            <button
-                              onClick={() => siparisSil(siparis.id)}
-                              className="text-red-500 hover:text-red-700 p-1"
-                            >
-                              <X size={16} />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
+            <!-- Seçilen Masa Detayı -->
+            <div class="section">
+                <div id="masaDetay">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                        <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem; color: #4b5563;">Masa Seçin</h3>
+                        <p>Sipariş almak için soldaki masalardan birini seçin</p>
                     </div>
-                  )}
                 </div>
-
-                {/* Toplam ve Ödeme */}
-                {masalar[secilenMasa].toplam > 0 && (
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-xl font-bold">TOPLAM:</span>
-                      <span className="text-xl font-bold text-green-600">
-                        ₺{masalar[secilenMasa].toplam.toFixed(2)}
-                      </span>
-                    </div>
-                    <button
-                      onClick={odemeYapildi}
-                      className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2 font-semibold"
-                    >
-                      <Check size={20} />
-                      Ödendi - Masayı Sıfırla
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <Edit3 size={48} className="mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-600 mb-2">
-                  Masa Seçin
-                </h3>
-                <p className="text-gray-500">
-                  Sipariş almak için soldaki masalardan birini seçin
-                </p>
-              </div>
-            )}
-          </div>
+            </div>
         </div>
 
-        {/* Açıklama */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-semibold text-blue-800 mb-2">Nasıl Kullanılır:</h3>
-          <div className="text-sm text-blue-700">
-            <p><span className="font-medium">🟢 Yeşil Masalar:</span> Boş masalar</p>
-            <p><span className="font-medium">🟠 Turuncu Masalar:</span> Sipariş olan masalar</p>
-            <p><span className="font-medium">📝 Sipariş Alma:</span> Masa numarasına tıklayın, ürün adı ve fiyatını girin</p>
-            <p><span className="font-medium">💰 Ödeme:</span> "Ödendi - Masayı Sıfırla" butonuna basarak masayı temizleyin</p>
-          </div>
+        <!-- Açıklama -->
+        <div class="info-box">
+            <h3 class="info-title">Nasıl Kullanılır:</h3>
+            <div class="info-text">
+                <p><strong>🟢 Yeşil Masalar:</strong> Boş masalar</p>
+                <p><strong>🟠 Turuncu Masalar:</strong> Sipariş olan masalar</p>
+                <p><strong>📝 Sipariş Alma:</strong> Masa numarasına tıklayın, ürün adı ve fiyatını girin</p>
+                <p><strong>💰 Ödeme:</strong> "Ödendi - Masayı Sıfırla" butonuna basarak masayı temizleyin</p>
+            </div>
         </div>
-      </div>
     </div>
-  );
-};
 
-export default RestoranAdisyon;
+    <script>
+        // Global değişkenler
+        let masalar = {};
+        let secilenMasa = null;
+
+        // Masaları başlat
+        function masalariBaslat() {
+            for (let i = 1; i <= 12; i++) {
+                masalar[i] = {
+                    siparisler: [],
+                    toplam: 0
+                };
+            }
+            masalariGuncelle();
+            istatistikleriGuncelle();
+        }
+
+        // Masaları güncelle
+        function masalariGuncelle() {
+            const grid = document.getElementById('masalarGrid');
+            grid.innerHTML = '';
+
+            Object.entries(masalar).forEach(([masaNo, masa]) => {
+                const masaDiv = document.createElement('div');
+                masaDiv.className = `masa ${masa.siparisler.length === 0 ? 'bos' : 'dolu'} ${secilenMasa == masaNo ? 'secili' : ''}`;
+                masaDiv.onclick = () => masaSecFonksiyonu(masaNo);
+
+                masaDiv.innerHTML = `
+                    <div class="masa-no">Masa ${masaNo}</div>
+                    <div class="masa-info">${masa.siparisler.length} ürün</div>
+                    ${masa.toplam > 0 ? `<div class="masa-info">₺${masa.toplam.toFixed(2)}</div>` : ''}
+                    ${masa.siparisler.length > 0 ? `<div class="masa-badge">${masa.siparisler.length}</div>` : ''}
+                `;
+
+                grid.appendChild(masaDiv);
+            });
+        }
+
+        // Masa seç
+        function masaSecFonksiyonu(masaNo) {
+            secilenMasa = masaNo;
+            masalariGuncelle();
+            masaDetayiGoster();
+        }
+
+        // Masa detayını göster
+        function masaDetayiGoster() {
+            const detayDiv = document.getElementById('masaDetay');
+            const masa = masalar[secilenMasa];
+
+            detayDiv.innerHTML = `
+                <div class="detay-header">
+                    <h2 class="section-title">Masa ${secilenMasa} - Adisyon</h2>
+                    <button class="btn btn-close" onclick="masayiKapat()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Sipariş Ekleme Formu -->
+                <div class="detay-form">
+                    <h3 class="form-title">Yeni Sipariş Ekle</h3>
+                    <div class="form-grid">
+                        <input type="text" id="yeniUrun" placeholder="Ürün adı..." class="form-input">
+                        <input type="number" id="yeniFiyat" placeholder="Fiyat (₺)" class="form-input">
+                    </div>
+                    <button class="btn btn-primary" onclick="siparisEkleFonksiyonu()" style="width: 100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        Sipariş Ekle
+                    </button>
+                </div>
+
+                <!-- Siparişler Listesi -->
+                <div class="siparisler">
+                    <h3 class="form-title">Siparişler</h3>
+                    <div class="siparis-list" id="siparisListesi">
+                        ${masa.siparisler.length === 0 ? 
+                            '<div class="no-siparis">Henüz sipariş eklenmemiş</div>' :
+                            masa.siparisler.map(siparis => `
+                                <div class="siparis-item">
+                                    <div class="siparis-urun">${siparis.urun}</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="siparis-fiyat">₺${siparis.fiyat.toFixed(2)}</span>
+                                        <button class="btn btn-danger" onclick="siparisSilFonksiyonu(${siparis.id})">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+
+                ${masa.toplam > 0 ? `
+                    <!-- Toplam ve Ödeme -->
+                    <div class="toplam-section">
+                        <div class="toplam-row">
+                            <span class="toplam-label">TOPLAM:</span>
+                            <span class="toplam-miktar">₺${masa.toplam.toFixed(2)}</span>
+                        </div>
+                        <button class="btn btn-success" onclick="odemeYapildiFonksiyonu()" style="width: 100%; padding: 0.75rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                            </svg>
+                            Ödendi - Masayı Sıfırla
+                        </button>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        // Sipariş ekle
+        function siparisEkleFonksiyonu() {
+            const urun = document.getElementById('yeniUrun').value.trim();
+            const fiyatStr = document.getElementById('yeniFiyat').value.trim();
+            
+            if (!urun || !fiyatStr) return;
+            
+            const fiyat = parseFloat(fiyatStr);
+            if (isNaN(fiyat)) return;
+
+            const siparis = {
+                id: Date.now(),
+                urun: urun,
+                fiyat: fiyat
+            };
+
+            masalar[secilenMasa].siparisler.push(siparis);
+            masalar[secilenMasa].toplam += fiyat;
+
+            document.getElementById('yeniUrun').value = '';
+            document.getElementById('yeniFiyat').value = '';
+
+            masalariGuncelle();
+            masaDetayiGoster();
+            istatistikleriGuncelle();
+        }
+
+        // Sipariş sil
+        function siparisSilFonksiyonu(siparisId) {
+            const masa = masalar[secilenMasa];
+            const siparis = masa.siparisler.find(s => s.id === siparisId);
+            
+            masalar[secilenMasa].siparisler = masa.siparisler.filter(s => s.id !== siparisId);
+            masalar[secilenMasa].toplam -= siparis.fiyat;
+
+            masalariGuncelle();
+            masaDetayiGoster();
+            istatistikleriGuncelle();
+        }
+
+        // Ödeme yapıldı
+        function odemeYapildiFonksiyonu() {
+            masalar[secilenMasa] = {
+                siparisler: [],
+                toplam: 0
+            };
+            
+            masayiKapat();
+            masalariGuncelle();
+            istatistikleriGuncelle();
+        }
+
+        // Masayı kapat
+        function masayiKapat() {
+            secilenMasa = null;
+            document.getElementById('masaDetay').innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem; color: #4b5563;">Masa Seçin</h3>
+                    <p>Sipariş almak için soldaki masalardan birini seçin</p>
+                </div>
+            `;
+            masalariGuncelle();
+        }
+
+        // İstatistikleri güncelle
+        function istatistikleriGuncelle() {
+            const doluMasalar = Object.values(masalar).filter(masa => masa.siparisler.length > 0).length;
+            const toplamCiro = Object.values(masalar).reduce((toplam, masa) => toplam + masa.toplam, 0);
+
+            document.getElementById('masaCount').textContent = doluMasalar;
+            document.getElementById('ciroCount').textContent = `₺${toplamCiro.toFixed(2)}`;
+        }
+
+        // Enter tuşu ile sipariş ekleme
+        document.addEventListener('DOMContentLoaded', function() {
+            masalariBaslat();
+
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && secilenMasa) {
+                    const activeElement = document.activeElement;
+                    if (activeElement.id === 'yeniUrun' || activeElement.id === 'yeniFiyat') {
+                        siparisEkleFonksiyonu();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
