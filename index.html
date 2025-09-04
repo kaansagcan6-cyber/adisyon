@@ -1,76 +1,4 @@
-// Telefon fiş yazdır
-        function telefonFisYazdir() {
-            if (!secilenTelefon) {
-                alert('Telefon seçili değil!');
-                return;
-            }
-            
-            var telefon = telefonlar[secilenTelefon];
-            if (telefon.siparisler.length === 0) {
-                alert('Bu telefonda sipariş yok!');
-                return;
-            }
-            
-            var tarih = new Date().toLocaleDateString('tr-TR');
-            var saat = new Date().toLocaleTimeString('tr-TR');
-            
-            // Mevcut sayfa içeriğini sakla
-            var originalContent = document.body.innerHTML;
-            
-            // Basit fiş HTML'i oluştur
-            var fisHTML = 
-                '<div style="font-family: Courier New, monospace; max-width: 400px; margin: 20px auto; padding: 20px; line-height: 1.6;">' +
-                '<div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 1rem; margin-bottom: 1rem;">' +
-                '<div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; text-decoration: underline;">ADİSYON / HESAP FİŞİ</div>' +
-                '<div style="margin-bottom: 0.3rem;"><strong>Telefon No:</strong> ' + (secilenTelefon - 6) + '</div>' +
-                '<div style="margin-bottom: 0.3rem;"><strong>Tarih:</strong> ' + tarih + '</div>' +
-                '<div style="margin-bottom: 0.3rem;"><strong>Saat:</strong> ' + saat + '</div>' +
-                '<div style="margin-bottom: 0.3rem;"><strong>Fiş No:</strong> ' + Date.now().toString().slice(-6) + '</div>' +
-                '</div>' +
-                '<div style="border-bottom: 1px solid #000; padding-bottom: 0.5rem; margin-bottom: 1rem;">' +
-                '<div style="display: flex; justify-content: space-between; font-weight: bold;">' +
-                '<span>ÜRÜN ADI</span><span>TUTAR</span>' +
-                '</div>' +
-                '</div>';
-            
-            // Siparişleri ekle
-            for (var i = 0; i < telefon.siparisler.length; i++) {
-                var siparis = telefon.siparisler[i];
-                var toplamFiyat = siparis.adet * siparis.birimFiyat;
-                
-                fisHTML += '<div style="margin-bottom: 0.8rem;">' +
-                          '<div style="font-weight: bold;">' + (i + 1) + '. ' + siparis.urun + '</div>' +
-                          '<div style="color: #666; font-size: 0.9rem;">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
-                
-                // Not varsa ekle
-                if (siparis.not && siparis.not.trim() !== '') {
-                    fisHTML += '<div style="color: #8b5cf6; font-style: italic; font-size: 0.9rem;">Not: ' + siparis.not + '</div>';
-                }
-                
-                fisHTML += '<div style="text-align: right; font-weight: bold; margin-top: 0.3rem;">₺' + toplamFiyat.toFixed(2) + '</div>' +
-                          '</div>';
-            }
-            
-            fisHTML += 
-                '</div>' +
-                '<div style="text-align: center; margin-top: 2rem;">' +
-                '<button onclick="window.print()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">📄 Yazdır</button>' +
-                '<button onclick="fisKapat()" style="padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer;">❌ Kapat</button>' +
-                '</div>' +
-                '</div>';
-            
-            // Sayfayı fiş ile değiştir
-            document.body.innerHTML = fisHTML;
-            
-            // Fiş kapatma fonksiyonu
-            window.fisKapat = function() {
-                document.body.innerHTML = originalContent;
-                // Sistemin yeniden çalışması için
-                setTimeout(function() {
-                    basla();
-                }, 100);
-            };
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -306,6 +234,11 @@
             gap: 1rem;
         }
 
+        .input-not {
+            background: #f0f8ff !important;
+            border: 2px dashed #3b82f6 !important;
+        }
+
         .btn {
             padding: 1rem 2rem;
             border: none;
@@ -374,6 +307,12 @@
         .siparis-detay {
             font-size: 0.9rem;
             color: #6b7280;
+        }
+
+        .siparis-not {
+            font-size: 0.9rem;
+            color: #8b5cf6;
+            font-style: italic;
         }
 
         .siparis-fiyat {
@@ -470,8 +409,17 @@
             
             <!-- Ana İstatistik -->
             <div class="main-stats">
-                <div class="stat-big" id="masaSayisi">0</div>
-                <div class="stat-label">Toplam Gelen Masa</div>
+                <div style="display: flex; justify-content: center; gap: 3rem; align-items: center;">
+                    <div style="text-align: center;">
+                        <div class="stat-big" id="masaSayisi">0</div>
+                        <div class="stat-label">Toplam Masa</div>
+                    </div>
+                    <div style="font-size: 2rem; color: #6b7280;">|</div>
+                    <div style="text-align: center;">
+                        <div class="stat-big" id="telefonSayisi">0</div>
+                        <div class="stat-label">Toplam Telefon</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Ciro İstatistikleri -->
@@ -495,16 +443,16 @@
         <div class="main-content">
             <!-- Masalar -->
             <div class="card">
-                <h2 class="card-title">Masalar</h2>
+                <h2 class="card-title">Masalar & Telefonlar</h2>
                 <div class="masalar-grid" id="masalarGrid"></div>
             </div>
 
             <!-- Masa Detayı -->
             <div class="card">
-                <div id="masaDetayi">
+                <div id="detayAlani">
                     <div class="bos-mesaj">
-                        <h3>Masa Seçin</h3>
-                        <p>Sipariş almak için bir masa seçin</p>
+                        <h3>Masa/Telefon Seçin</h3>
+                        <p>Sipariş almak için bir masa veya telefon seçin</p>
                     </div>
                 </div>
             </div>
@@ -514,26 +462,28 @@
     <script>
         // Global değişkenler
         var masalar = {};
-        var secilenMasa = null;
-        var toplamMasaSayisi = 0;
-        var toplamCiroMiktari = 0;
-        var kartCiroMiktari = 0;
-        var nakitCiroMiktari = 0;
+        var telefonlar = {};
+        var secilen = null;
+        var secilenTip = null; // 'masa' veya 'telefon'
+        var toplamMasa = 0;
+        var toplamTelefon = 0;
+        var toplamCiro = 0;
+        var kartCiro = 0;
+        var nakitCiro = 0;
 
         // Sistem başlat
         function basla() {
-            // 12 masa oluştur
-            for (var i = 1; i <= 12; i++) {
-                masalar[i] = {
-                    siparisler: [],
-                    toplam: 0
-                };
+            // 6 masa oluştur
+            for (var i = 1; i <= 6; i++) {
+                masalar[i] = { siparisler: [], toplam: 0 };
             }
             
-            // Kayıtlı verileri yükle
-            verileriYukle();
+            // 6 telefon oluştur  
+            for (var i = 1; i <= 6; i++) {
+                telefonlar[i] = { siparisler: [], toplam: 0 };
+            }
             
-            // Ekranı güncelle
+            verileriYukle();
             masalariGoster();
             istatistikleriGuncelle();
         }
@@ -545,10 +495,12 @@
                 if (veri) {
                     var data = JSON.parse(veri);
                     masalar = data.masalar || masalar;
-                    toplamMasaSayisi = data.toplamMasaSayisi || 0;
-                    toplamCiroMiktari = data.toplamCiroMiktari || 0;
-                    kartCiroMiktari = data.kartCiroMiktari || 0;
-                    nakitCiroMiktari = data.nakitCiroMiktari || 0;
+                    telefonlar = data.telefonlar || telefonlar;
+                    toplamMasa = data.toplamMasa || 0;
+                    toplamTelefon = data.toplamTelefon || 0;
+                    toplamCiro = data.toplamCiro || 0;
+                    kartCiro = data.kartCiro || 0;
+                    nakitCiro = data.nakitCiro || 0;
                 }
             } catch (error) {
                 console.log('Veri yükleme hatası');
@@ -560,10 +512,12 @@
             try {
                 var veri = {
                     masalar: masalar,
-                    toplamMasaSayisi: toplamMasaSayisi,
-                    toplamCiroMiktari: toplamCiroMiktari,
-                    kartCiroMiktari: kartCiroMiktari,
-                    nakitCiroMiktari: nakitCiroMiktari
+                    telefonlar: telefonlar,
+                    toplamMasa: toplamMasa,
+                    toplamTelefon: toplamTelefon,
+                    toplamCiro: toplamCiro,
+                    kartCiro: kartCiro,
+                    nakitCiro: nakitCiro
                 };
                 localStorage.setItem('restoranData', JSON.stringify(veri));
             } catch (error) {
@@ -576,13 +530,14 @@
             var container = document.getElementById('masalarGrid');
             container.innerHTML = '';
 
-            for (var i = 1; i <= 12; i++) {
+            // Masalar (1-6)
+            for (var i = 1; i <= 6; i++) {
                 var masa = masalar[i];
                 var div = document.createElement('div');
                 
                 var sinif = 'masa ';
                 sinif += masa.siparisler.length === 0 ? 'bos' : 'dolu';
-                if (secilenMasa === i) sinif += ' secili';
+                if (secilen === i && secilenTip === 'masa') sinif += ' secili';
                 
                 div.className = sinif;
                 div.onclick = (function(no) {
@@ -596,21 +551,53 @@
 
                 container.appendChild(div);
             }
+            
+            // Telefonlar (1-6)
+            for (var i = 1; i <= 6; i++) {
+                var telefon = telefonlar[i];
+                var div = document.createElement('div');
+                
+                var sinif = 'masa ';
+                sinif += telefon.siparisler.length === 0 ? 'bos' : 'dolu';
+                if (secilen === i && secilenTip === 'telefon') sinif += ' secili';
+                
+                div.className = sinif;
+                div.onclick = (function(no) {
+                    return function() { telefonSec(no); };
+                })(i);
+
+                div.innerHTML = 
+                    '<div class="masa-no">Telefon ' + i + '</div>' +
+                    '<div class="masa-info">' + telefon.siparisler.length + ' sipariş</div>' +
+                    (telefon.toplam > 0 ? '<div class="masa-info">₺' + telefon.toplam.toFixed(2) + '</div>' : '');
+
+                container.appendChild(div);
+            }
         }
 
         // Masa seç
-        function masaSec(masaNo) {
-            secilenMasa = masaNo;
+        function masaSec(no) {
+            secilen = no;
+            secilenTip = 'masa';
             masalariGoster();
-            masaDetayiGoster();
+            detayGoster();
         }
 
-        // Masa detayını göster
-        function masaDetayiGoster() {
-            var container = document.getElementById('masaDetayi');
-            var masa = masalar[secilenMasa];
+        // Telefon seç
+        function telefonSec(no) {
+            secilen = no;
+            secilenTip = 'telefon';
+            masalariGoster();
+            detayGoster();
+        }
+
+        // Detay göster
+        function detayGoster() {
+            var container = document.getElementById('detayAlani');
+            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+            var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
             
-            var html = '<h2 class="card-title">Masa ' + secilenMasa + '</h2>';
+            var html = '<h2 class="card-title">' + baslik + '</h2>';
             
             // Sipariş ekleme formu
             html += '<div class="siparis-form">';
@@ -620,6 +607,7 @@
             html += '<input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input">';
             html += '<input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input">';
             html += '</div>';
+            html += '<input type="text" id="urunNot" placeholder="🗒️ Not ekle (isteğe bağlı)" class="input input-not">';
             html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>';
             html += '</div>';
             
@@ -627,17 +615,20 @@
             html += '<div class="siparisler">';
             html += '<div class="form-title">Siparişler</div>';
             
-            if (masa.siparisler.length === 0) {
+            if (veri.siparisler.length === 0) {
                 html += '<div class="siparis-yok">Henüz sipariş yok</div>';
             } else {
-                for (var i = 0; i < masa.siparisler.length; i++) {
-                    var siparis = masa.siparisler[i];
+                for (var i = 0; i < veri.siparisler.length; i++) {
+                    var siparis = veri.siparisler[i];
                     var toplamFiyat = siparis.adet * siparis.birimFiyat;
                     
                     html += '<div class="siparis">';
                     html += '<div class="siparis-info">';
                     html += '<div class="siparis-urun">' + siparis.urun + '</div>';
                     html += '<div class="siparis-detay">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
+                    if (siparis.not && siparis.not.trim() !== '') {
+                        html += '<div class="siparis-not">Not: ' + siparis.not + '</div>';
+                    }
                     html += '</div>';
                     html += '<div class="siparis-fiyat">₺' + toplamFiyat.toFixed(2) + '</div>';
                     html += '<button class="btn btn-danger" onclick="siparisSil(' + i + ')">Sil</button>';
@@ -647,17 +638,15 @@
             html += '</div>';
             
             // Toplam ve ödeme
-            if (masa.toplam > 0) {
+            if (veri.toplam > 0) {
                 html += '<div class="toplam-alan">';
                 html += '<div class="toplam-satir">';
                 html += '<div class="toplam-label">TOPLAM:</div>';
-                html += '<div class="toplam-tutar">₺' + masa.toplam.toFixed(2) + '</div>';
+                html += '<div class="toplam-tutar">₺' + veri.toplam.toFixed(2) + '</div>';
                 html += '</div>';
                 
-                // Fiş yazdır butonu
-                html += '<button class="btn btn-print" onclick="fisYazdir()">🖨️ Gelişmiş Fiş Yazdır</button>';
+                html += '<button class="btn btn-print" onclick="fisYazdir()">🖨️ Fiş Yazdır</button>';
                 
-                // Ödeme seçenekleri
                 html += '<div class="form-title">Ödeme Türü Seçin:</div>';
                 html += '<div class="odeme-secim">';
                 html += '<div class="odeme-btn kart" onclick="odemeYap(\'kart\')">💳 Kart ile Öde</div>';
@@ -674,257 +663,147 @@
             var urun = document.getElementById('urunAdi').value.trim();
             var adet = parseInt(document.getElementById('adet').value) || 1;
             var birimFiyat = parseFloat(document.getElementById('fiyat').value);
+            var not = document.getElementById('urunNot').value.trim();
             
             if (!urun || adet <= 0 || birimFiyat <= 0) {
                 alert('Lütfen tüm alanları doğru doldurun!');
                 return;
             }
 
-            var siparis = {
-                urun: urun,
-                adet: adet,
-                birimFiyat: birimFiyat
-            };
-
-            masalar[secilenMasa].siparisler.push(siparis);
-            masalar[secilenMasa].toplam += adet * birimFiyat;
+            var siparis = { urun: urun, adet: adet, birimFiyat: birimFiyat, not: not };
+            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+            
+            veri.siparisler.push(siparis);
+            veri.toplam += adet * birimFiyat;
 
             // Formu temizle
             document.getElementById('urunAdi').value = '';
             document.getElementById('adet').value = '1';
             document.getElementById('fiyat').value = '';
+            document.getElementById('urunNot').value = '';
 
             masalariGoster();
-            masaDetayiGoster();
+            detayGoster();
             verileriKaydet();
         }
 
         // Sipariş sil
         function siparisSil(index) {
             if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
-                var masa = masalar[secilenMasa];
-                var siparis = masa.siparisler[index];
+                var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+                var siparis = veri.siparisler[index];
                 
-                masa.toplam -= siparis.adet * siparis.birimFiyat;
-                masa.siparisler.splice(index, 1);
+                veri.toplam -= siparis.adet * siparis.birimFiyat;
+                veri.siparisler.splice(index, 1);
 
                 masalariGoster();
-                masaDetayiGoster();
+                detayGoster();
                 verileriKaydet();
             }
         }
 
         // Ödeme yap
         function odemeYap(tur) {
-            var masaToplami = masalar[secilenMasa].toplam;
+            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+            var miktar = veri.toplam;
             
-            if (confirm(tur.toUpperCase() + ' ile ₺' + masaToplami.toFixed(2) + ' ödeme alındı olarak işaretlensin mi?')) {
+            if (confirm(tur.toUpperCase() + ' ile ₺' + miktar.toFixed(2) + ' ödeme alındı olarak işaretlensin mi?')) {
                 // İstatistikleri güncelle
-                toplamMasaSayisi++;
-                toplamCiroMiktari += masaToplami;
-                
-                if (tur === 'kart') {
-                    kartCiroMiktari += masaToplami;
+                if (secilenTip === 'masa') {
+                    toplamMasa++;
                 } else {
-                    nakitCiroMiktari += masaToplami;
+                    toplamTelefon++;
                 }
                 
-                // Masayı sıfırla
-                masalar[secilenMasa] = {
-                    siparisler: [],
-                    toplam: 0
-                };
+                toplamCiro += miktar;
+                if (tur === 'kart') {
+                    kartCiro += miktar;
+                } else {
+                    nakitCiro += miktar;
+                }
                 
-                secilenMasa = null;
+                // Sıfırla
+                veri.siparisler = [];
+                veri.toplam = 0;
+                secilen = null;
+                secilenTip = null;
                 
-                document.getElementById('masaDetayi').innerHTML = 
+                document.getElementById('detayAlani').innerHTML = 
                     '<div class="bos-mesaj">' +
-                    '<h3>Masa Seçin</h3>' +
-                    '<p>Sipariş almak için bir masa seçin</p>' +
+                    '<h3>Masa/Telefon Seçin</h3>' +
+                    '<p>Sipariş almak için bir masa veya telefon seçin</p>' +
                     '</div>';
                 
                 masalariGoster();
                 istatistikleriGuncelle();
                 verileriKaydet();
                 
-                alert('✅ ' + tur.toUpperCase() + ' ödeme alındı! Masa sıfırlandı.');
+                alert('✅ ' + tur.toUpperCase() + ' ödeme alındı!');
             }
         }
 
-        // Gelişmiş fiş yazdır
+        // Fiş yazdır
         function fisYazdir() {
-            if (!secilenMasa) {
-                alert('Masa seçili değil!');
-                return;
-            }
-            
-            var masa = masalar[secilenMasa];
-            if (masa.siparisler.length === 0) {
-                alert('Bu masada sipariş yok!');
-                return;
-            }
+            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+            var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
             
             var tarih = new Date().toLocaleDateString('tr-TR');
             var saat = new Date().toLocaleTimeString('tr-TR');
             
-            var fisWindow = window.open('', '_blank', 'width=450,height=700');
-            var fisHTML = 
-                '<!DOCTYPE html>' +
-                '<html><head><title>Masa ' + secilenMasa + ' - Gelişmiş Fiş</title>' +
-                '<meta charset="UTF-8">' +
-                '<style>' +
-                'body{font-family:"Courier New",monospace;margin:0;padding:20px;line-height:1.5;background:#fff;}' +
-                '.fis-container{max-width:350px;margin:0 auto;border:2px dashed #333;padding:20px;}' +
-                '.logo-area{text-align:center;margin-bottom:20px;border-bottom:2px solid #333;padding-bottom:15px;}' +
-                '.restoran-logo{font-size:2rem;font-weight:bold;margin-bottom:8px;color:#333;}' +
-                '.restoran-info{font-size:0.9rem;margin-bottom:3px;color:#666;}' +
-                '.fis-header{text-align:center;margin-bottom:20px;border-bottom:1px solid #333;padding-bottom:15px;}' +
-                '.fis-title{font-size:1.3rem;font-weight:bold;margin-bottom:8px;text-decoration:underline;}' +
-                '.fis-detay{font-size:1rem;margin-bottom:3px;}' +
-                '.siparis-listesi{margin-bottom:20px;}' +
-                '.siparis-header{display:flex;justify-content:space-between;font-weight:bold;border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:12px;font-size:1.1rem;}' +
-                '.siparis-item{margin-bottom:8px;padding:5px 0;border-bottom:1px dotted #ccc;}' +
-                '.urun-adi{font-weight:bold;margin-bottom:3px;}' +
-                '.urun-detay{font-size:0.9rem;color:#666;margin-bottom:5px;}' +
-                '.urun-fiyat{text-align:right;font-weight:bold;font-size:1.1rem;}' +
-                '.hesap-detay{border-top:2px solid #333;padding-top:15px;margin-top:15px;}' +
-                '.toplam-satir{display:flex;justify-content:space-between;margin-bottom:5px;font-size:1rem;}' +
-                '.ara-toplam{padding:8px 0;border-bottom:1px solid #ccc;}' +
-                '.kdv-satir{color:#666;}' +
-                '.ana-toplam{border-top:3px double #333;border-bottom:3px double #333;padding:12px 0;margin:15px 0;font-weight:bold;font-size:1.3rem;}' +
-                '.qr-alan{text-align:center;margin:20px 0;padding:15px;border:1px dashed #999;background:#f9f9f9;}' +
-                '.qr-placeholder{width:80px;height:80px;border:2px solid #333;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;}' +
-                '.qr-info{font-size:0.8rem;color:#666;}' +
-                '.fis-footer{text-align:center;margin-top:20px;border-top:2px solid #333;padding-top:15px;}' +
-                '.tesekkur{font-size:1.1rem;font-weight:bold;margin-bottom:8px;}' +
-                '.iletisim{font-size:0.8rem;color:#666;margin-bottom:3px;}' +
-                '.tarih-saat{text-align:right;font-size:0.8rem;margin-top:15px;color:#666;}' +
-                '@media print{body{margin:0;padding:10px;}.fis-container{border:none;max-width:none;padding:10px;}}' +
-                '</style></head><body>' +
-                '<div class="fis-container">' +
-                
-                // Logo ve Restoran Bilgileri
-                '<div class="logo-area">' +
-                '<div class="restoran-logo">🍽️ LEZZET SOFRASI</div>' +
-                '<div class="restoran-info">Merkez Mahallesi, Güney Sokak No:15</div>' +
-                '<div class="restoran-info">İzmir / TÜRKİYE</div>' +
-                '<div class="restoran-info">Tel: (0232) 123 45 67</div>' +
-                '<div class="restoran-info">www.lezzetsofrasi.com</div>' +
-                '</div>' +
-                
-                // Fiş Başlığı
-                '<div class="fis-header">' +
-                '<div class="fis-title">ADİSYON / HESAP FİŞİ</div>' +
-                '<div class="fis-detay"><strong>Masa No:</strong> ' + secilenMasa + '</div>' +
-                '<div class="fis-detay"><strong>Tarih:</strong> ' + tarih + '</div>' +
-                '<div class="fis-detay"><strong>Saat:</strong> ' + saat + '</div>' +
-                '<div class="fis-detay"><strong>Fiş No:</strong> ' + Date.now().toString().slice(-6) + '</div>' +
-                '</div>' +
-                
-                // Sipariş Listesi
-                '<div class="siparis-listesi">' +
-                '<div class="siparis-header">' +
-                '<span>ÜRÜN ADI</span>' +
-                '<span>TUTAR</span>' +
-                '</div>';
+            var fisMetni = "=== ADİSYON / HESAP FİŞİ ===\n\n";
+            fisMetni += baslik + "\n";
+            fisMetni += "Tarih: " + tarih + "\n";
+            fisMetni += "Saat: " + saat + "\n";
+            fisMetni += "Fiş No: " + Date.now().toString().slice(-6) + "\n\n";
+            fisMetni += "ÜRÜN ADI                TUTAR\n";
+            fisMetni += "================================\n";
             
-            // Siparişleri ekle
-            for (var i = 0; i < masa.siparisler.length; i++) {
-                var siparis = masa.siparisler[i];
+            for (var i = 0; i < veri.siparisler.length; i++) {
+                var siparis = veri.siparisler[i];
                 var toplamFiyat = siparis.adet * siparis.birimFiyat;
                 
-                fisHTML += 
-                    '<div class="siparis-item">' +
-                    '<div class="urun-adi">' + (i + 1) + '. ' + siparis.urun + '</div>' +
-                    '<div class="urun-detay">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>' +
-                    '<div class="urun-fiyat">₺' + toplamFiyat.toFixed(2) + '</div>' +
-                    '</div>';
+                fisMetni += (i + 1) + ". " + siparis.urun + "\n";
+                fisMetni += "   " + siparis.adet + " adet × ₺" + siparis.birimFiyat.toFixed(2) + "\n";
+                
+                if (siparis.not && siparis.not.trim() !== '') {
+                    fisMetni += "   Not: " + siparis.not + "\n";
+                }
+                
+                fisMetni += "                     ₺" + toplamFiyat.toFixed(2) + "\n\n";
             }
             
-            fisHTML += '</div>';
-            
-            // Hesap Detayları
-            var araToplam = masa.toplam;
-            var kdvOrani = 0.20; // %20 KDV
-            var kdvMiktari = araToplam * kdvOrani / (1 + kdvOrani);
-            var kdvHaricToplam = araToplam - kdvMiktari;
-            
-            fisHTML += 
-                '<div class="hesap-detay">' +
-                '<div class="ara-toplam">' +
-                '<div class="toplam-satir">' +
-                '<span>Ara Toplam (KDV Hariç):</span>' +
-                '<span>₺' + kdvHaricToplam.toFixed(2) + '</span>' +
-                '</div>' +
-                '<div class="toplam-satir kdv-satir">' +
-                '<span>KDV (%20):</span>' +
-                '<span>₺' + kdvMiktari.toFixed(2) + '</span>' +
-                '</div>' +
-                '</div>' +
-                '<div class="ana-toplam">' +
-                '<div class="toplam-satir">' +
-                '<span>GENEL TOPLAM:</span>' +
-                '<span>₺' + araToplam.toFixed(2) + '</span>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-            
-            // QR Kod Alanı
-            fisHTML += 
-                '<div class="qr-alan">' +
-                '<div class="qr-placeholder">QR KOD</div>' +
-                '<div class="qr-info">Değerlendirme için QR kodu okutun</div>' +
-                '<div class="qr-info">Masa: ' + secilenMasa + ' - ₺' + araToplam.toFixed(2) + '</div>' +
-                '</div>';
-            
-            // Fiş Footer
-            fisHTML += 
-                '<div class="fis-footer">' +
-                '<div class="tesekkur">🙏 AFİYET OLSUN! 🙏</div>' +
-                '<div class="tesekkur">TEŞEKKÜR EDERİZ</div>' +
-                '<div class="iletisim">Bizi tercih ettiğiniz için teşekkürler</div>' +
-                '<div class="iletisim">Tekrar bekleriz!</div>' +
-                '<div class="iletisim">★★★★★</div>' +
-                '<div class="tarih-saat">Yazdırma: ' + new Date().toLocaleString('tr-TR') + '</div>' +
-                '</div>' +
-                '</div>' +
-                '</body></html>';
-            
-            try {
-                fisWindow.document.write(fisHTML);
-                fisWindow.document.close();
-                setTimeout(function() { 
-                    fisWindow.print(); 
-                }, 1000);
-            } catch (error) {
-                console.log('Fiş yazdırma hatası:', error);
-                alert('Fiş yazdırırken hata oluştu. Pop-up engelleyicisini kontrol edin.');
-                fisWindow.close();
-            }
+            alert(fisMetni);
         }
 
         // İstatistikleri güncelle
         function istatistikleriGuncelle() {
-            var bekleyenCiro = 0;
-            for (var masaNo in masalar) {
-                bekleyenCiro += masalar[masaNo].toplam;
+            var bekleyenMasa = 0;
+            var bekleyenTelefon = 0;
+            
+            for (var i in masalar) {
+                bekleyenMasa += masalar[i].toplam;
+            }
+            for (var i in telefonlar) {
+                bekleyenTelefon += telefonlar[i].toplam;
             }
             
-            var tumCiro = toplamCiroMiktari + bekleyenCiro;
+            var tumCiro = toplamCiro + bekleyenMasa + bekleyenTelefon;
             
-            document.getElementById('masaSayisi').textContent = toplamMasaSayisi;
+            document.getElementById('masaSayisi').textContent = toplamMasa;
+            document.getElementById('telefonSayisi').textContent = toplamTelefon;
             document.getElementById('toplamCiro').textContent = '₺' + tumCiro.toFixed(2);
-            document.getElementById('kartCiro').textContent = '₺' + kartCiroMiktari.toFixed(2);
-            document.getElementById('nakitCiro').textContent = '₺' + nakitCiroMiktari.toFixed(2);
+            document.getElementById('kartCiro').textContent = '₺' + kartCiro.toFixed(2);
+            document.getElementById('nakitCiro').textContent = '₺' + nakitCiro.toFixed(2);
         }
 
         // Sıfırla
         function sifirla() {
-            if (confirm('⚠️ Toplam masa sayısı ve tüm cirolar sıfırlanacak!\n\nDevam etmek istiyor musunuz?')) {
-                toplamMasaSayisi = 0;
-                toplamCiroMiktari = 0;
-                kartCiroMiktari = 0;
-                nakitCiroMiktari = 0;
+            if (confirm('⚠️ Tüm istatistikler sıfırlanacak!\n\nDevam etmek istiyor musunuz?')) {
+                toplamMasa = 0;
+                toplamTelefon = 0;
+                toplamCiro = 0;
+                kartCiro = 0;
+                nakitCiro = 0;
                 
                 istatistikleriGuncelle();
                 verileriKaydet();
@@ -934,8 +813,8 @@
         }
 
         // Sayfa yüklendiğinde başlat
-        setTimeout(function() {
-            basla();
-            setInterval(verileriKaydet, 5000);
-        }, 100);
+        setTimeout(basla, 100);
+        setInterval(verileriKaydet, 5000);
     </script>
+</body>
+</html>
