@@ -401,6 +401,24 @@
             document.getElementById('detay').innerHTML = html;
         }
 
+        // İstatistikleri sıfırla
+        function istatistikleriSifirla() {
+            if (confirm('Toplam gelen masa sayısı ve ciro sıfırlanacak!\n\nBu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+                console.log('İstatistikler sıfırlanıyor...');
+                console.log('Önceki değerler - Masa:', gelenMasaSayisi, 'Ciro:', toplamCiro);
+                
+                gelenMasaSayisi = 0;
+                toplamCiro = 0;
+                
+                // Aktif siparişleri koru, sadece istatistikleri sıfırla
+                sayilariGuncelle();
+                otomatikKaydet();
+                
+                console.log('İstatistikler sıfırlandı!');
+                alert('✅ İstatistikler sıfırlandı!\n\nAktif siparişler korundu, sadece toplam sayaçlar sıfırlandı.');
+            }
+        }
+
         // Otomatik kaydet
         function otomatikKaydet() {
             try {
