@@ -691,7 +691,15 @@
                 return;
             }
 
-            const kullanicilar = JSON.parse(localStorage.getItem('restoranKullanicilari') || '{}');
+            console.log('Kayıt denemesi:', username); // Debug
+
+            let kullanicilar;
+            try {
+                kullanicilar = JSON.parse(localStorage.getItem('restoranKullanicilari') || '{}');
+            } catch (error) {
+                console.error('localStorage okuma hatası:', error);
+                kullanicilar = {};
+            }
             
             if (kullanicilar[username]) {
                 alert('Bu kullanıcı adı zaten alınmış!');
@@ -704,10 +712,22 @@
                 kayitTarihi: new Date().toISOString()
             };
 
-            localStorage.setItem('restoranKullanicilari', JSON.stringify(kullanicilar));
-            
-            alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
-            girisEkraniniGoster();
+            try {
+                localStorage.setItem('restoranKullanicilari', JSON.stringify(kullanicilar));
+                console.log('Kayıt başarılı, localStorage güncellendi'); // Debug
+                
+                alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+                
+                // Kayıt formunu temizle
+                document.getElementById('registerUsername').value = '';
+                document.getElementById('registerPassword').value = '';
+                document.getElementById('registerRestaurant').value = '';
+                
+                girisEkraniniGoster();
+            } catch (error) {
+                console.error('localStorage yazma hatası:', error);
+                alert('Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+            }
         }
 
         function kayitEkraniniGoster() {
