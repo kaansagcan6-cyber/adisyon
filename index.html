@@ -279,6 +279,7 @@
         </div>
 
         <div class="stats">
+            <button class="reset-btn" onclick="istatistikleriSifirla()">🔄 Sıfırla</button>
             <div class="masa-count" id="masaCount">0</div>
             <div>Toplam Gelen Masa</div>
             
@@ -491,6 +492,24 @@
             
             document.getElementById('masaCount').innerHTML = gelenMasaSayisi;
             document.getElementById('ciroCount').innerHTML = '₺' + (toplamCiro + bekleyenCiro).toFixed(2);
+        }
+
+        // İstatistikleri sıfırla
+        function istatistikleriSifirla() {
+            if (confirm('Toplam gelen masa sayısı ve ciro sıfırlanacak!\n\nBu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+                console.log('İstatistikler sıfırlanıyor...');
+                console.log('Önceki değerler - Masa:', gelenMasaSayisi, 'Ciro:', toplamCiro);
+                
+                gelenMasaSayisi = 0;
+                toplamCiro = 0;
+                
+                // Aktif siparişleri koru, sadece istatistikleri sıfırla
+                sayilariGuncelle();
+                otomatikKaydet();
+                
+                console.log('İstatistikler sıfırlandı!');
+                alert('✅ İstatistikler sıfırlandı!\n\nAktif siparişler korundu, sadece toplam sayaçlar sıfırlandı.');
+            }
         }
 
         // Enter tuşu
