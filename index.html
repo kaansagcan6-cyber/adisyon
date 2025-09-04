@@ -17,11 +17,6 @@
             padding: 0.5rem;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         /* LOGIN EKRANI */
         .login-container {
             min-height: 100vh;
@@ -41,31 +36,16 @@
             margin: 1rem;
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
         .login-title {
             font-size: 1.8rem;
             font-weight: bold;
             color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-subtitle {
-            color: #6b7280;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .form-group {
             margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 0.5rem;
         }
 
         .form-input {
@@ -74,13 +54,7 @@
             border: 2px solid #d1d5db;
             border-radius: 0.5rem;
             outline: none;
-            transition: border-color 0.2s;
             font-size: 1rem;
-        }
-
-        .form-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .login-btn {
@@ -93,34 +67,23 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
             margin-bottom: 1rem;
         }
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .switch-btn {
-            width: 100%;
+        .info-box {
+            margin-top: 1rem;
             padding: 0.75rem;
-            background: transparent;
-            color: #6b7280;
-            border: 2px solid #e5e7eb;
+            background: #f3f4f6;
             border-radius: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .switch-btn:hover {
-            border-color: #3b82f6;
-            color: #3b82f6;
+            font-size: 0.875rem;
+            color: #6b7280;
         }
 
         /* ANA UYGULAMA */
         .app-container {
             display: none;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .app-header {
@@ -132,25 +95,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .app-title {
             font-size: 1.5rem;
             font-weight: bold;
             color: #1f2937;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .welcome-text {
-            color: #6b7280;
-            font-size: 0.9rem;
         }
 
         .logout-btn {
@@ -160,11 +110,6 @@
             border: none;
             border-radius: 0.375rem;
             cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .logout-btn:hover {
-            background: #dc2626;
         }
 
         .stats {
@@ -177,29 +122,17 @@
         }
 
         .masa-count {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #2563eb;
             margin-bottom: 0.25rem;
-        }
-
-        .masa-label {
-            font-size: 1rem;
-            color: #2563eb;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
         }
 
         .ciro-count {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #16a34a;
-            margin-bottom: 0.25rem;
-        }
-
-        .ciro-label {
-            color: #16a34a;
-            font-weight: 500;
+            margin-top: 1rem;
         }
 
         .main-content {
@@ -213,18 +146,6 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 2rem;
             }
-            
-            .app-title {
-                font-size: 2rem;
-            }
-            
-            .stats {
-                padding: 1.5rem;
-            }
-            
-            .masa-count {
-                font-size: 2.5rem;
-            }
         }
 
         .section {
@@ -232,12 +153,6 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             padding: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .section {
-                padding: 1.5rem;
-            }
         }
 
         .section-title {
@@ -249,39 +164,20 @@
 
         .masalar-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-
-        @media (min-width: 480px) {
-            .masalar-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-            }
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
         }
 
         .masa {
-            position: relative;
             padding: 1rem;
             border-radius: 0.5rem;
             border: 2px solid;
             cursor: pointer;
-            transition: all 0.2s;
             text-align: center;
             min-height: 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        @media (min-width: 768px) {
-            .masa {
-                padding: 1.5rem;
-            }
-        }
-
-        .masa:active {
-            transform: scale(0.95);
         }
 
         .masa.bos {
@@ -300,42 +196,6 @@
             box-shadow: 0 0 0 3px #60a5fa;
         }
 
-        .masa-no {
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        .masa-info {
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
-
-        @media (min-width: 768px) {
-            .masa-no {
-                font-size: 1.125rem;
-            }
-            
-            .masa-info {
-                font-size: 0.875rem;
-            }
-        }
-
-        .masa-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background-color: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
         .detay-form {
             background-color: #f9fafb;
             padding: 1rem;
@@ -343,54 +203,21 @@
             margin-bottom: 1rem;
         }
 
-        .form-title {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        @media (min-width: 640px) {
-            .form-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-            }
-        }
-
         .detay-input {
-            padding: 0.75rem;
+            width: 100%;
+            padding: 0.5rem;
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
-            outline: none;
-            font-size: 1rem;
-        }
-
-        .detay-input:focus {
-            border-color: #3b82f6;
+            margin-bottom: 0.5rem;
         }
 
         .btn {
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
+            width: 100%;
+            padding: 0.75rem;
             border: none;
+            border-radius: 0.375rem;
             cursor: pointer;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
-            font-size: 1rem;
-        }
-
-        .btn:active {
-            transform: scale(0.95);
         }
 
         .btn-primary {
@@ -398,71 +225,19 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
         .btn-success {
             background-color: #16a34a;
             color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #15803d;
-        }
-
-        .btn-danger {
-            background-color: transparent;
-            color: #ef4444;
-            padding: 0.5rem;
-        }
-
-        .btn-danger:hover {
-            color: #dc2626;
-        }
-
-        .btn-close {
-            background-color: transparent;
-            color: #6b7280;
-            padding: 0.5rem;
-        }
-
-        .btn-close:hover {
-            color: #374151;
-        }
-
-        .siparisler {
-            margin-bottom: 1rem;
-        }
-
-        .siparis-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        @media (min-width: 768px) {
-            .siparis-list {
-                max-height: 300px;
-            }
         }
 
         .siparis-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem;
+            padding: 0.5rem;
             background-color: #f9fafb;
             border-radius: 0.375rem;
             margin-bottom: 0.5rem;
-        }
-
-        .siparis-urun {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .siparis-fiyat {
-            font-weight: 600;
         }
 
         .empty-state {
@@ -470,173 +245,58 @@
             padding: 2rem;
             color: #6b7280;
         }
-
-        .empty-state svg {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 1rem;
-        }
-
-        .toplam-section {
-            border-top: 1px solid #e5e7eb;
-            padding-top: 1rem;
-        }
-
-        .toplam-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .toplam-label {
-            font-size: 1.125rem;
-            font-weight: bold;
-        }
-
-        .toplam-miktar {
-            font-size: 1.125rem;
-            font-weight: bold;
-            color: #16a34a;
-        }
-
-        .no-siparis {
-            text-align: center;
-            color: #6b7280;
-            padding: 1.5rem;
-        }
-
-        .detay-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .detay-header h2 {
-            font-size: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .detay-header h2 {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Mobil için uyarı */
-        .mobile-warning {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: #92400e;
-            font-size: 0.875rem;
-        }
-
-        @media (min-width: 768px) {
-            .mobile-warning {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- GİRİŞ EKRANI -->
     <div id="loginScreen" class="login-container">
         <div class="login-card">
-            <div class="login-header">
-                <h1 class="login-title">🍽️ Restoran Adisyon</h1>
-                <p class="login-subtitle">Hesabınıza giriş yapın</p>
+            <h1 class="login-title">🍽️ Restoran Adisyon</h1>
+            
+            <div class="form-group">
+                <input type="text" id="username" class="form-input" placeholder="Kullanıcı adı: admin">
             </div>
             
-            <div id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">Kullanıcı Adı</label>
-                    <input type="text" id="loginUsername" class="form-input" placeholder="admin veya restoran">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Şifre</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="admin veya 123456">
-                </div>
-                
-                <button onclick="girisYap()" class="login-btn">Giriş Yap</button>
-                <button onclick="kayitEkraniniGoster()" class="switch-btn">Hesap Oluştur</button>
-                
-                <div style="margin-top: 1rem; padding: 0.75rem; background: #f3f4f6; border-radius: 0.5rem; font-size: 0.875rem; color: #6b7280;">
-                    <strong>Demo hesaplar:</strong><br>
-                    👤 admin / admin<br>
-                    👤 restoran / 123456
-                </div>
+            <div class="form-group">
+                <input type="password" id="password" class="form-input" placeholder="Şifre: admin">
             </div>
             
-            <div id="registerForm" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label">Kullanıcı Adı</label>
-                    <input type="text" id="registerUsername" class="form-input" placeholder="Kullanıcı adı seçin">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Şifre</label>
-                    <input type="password" id="registerPassword" class="form-input" placeholder="Şifre oluşturun">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Restoran Adı</label>
-                    <input type="text" id="registerRestaurant" class="form-input" placeholder="Restoran adınızı girin">
-                </div>
-                
-                <button onclick="kayitOl()" class="login-btn">Kayıt Ol</button>
-                <button onclick="girisEkraniniGoster()" class="switch-btn">Giriş Yap</button>
+            <button class="login-btn" onclick="login()">Giriş Yap</button>
+            
+            <div class="info-box">
+                <strong>Test Hesabı:</strong><br>
+                Kullanıcı: admin<br>
+                Şifre: admin
             </div>
         </div>
     </div>
 
     <!-- ANA UYGULAMA -->
     <div id="appScreen" class="app-container">
-        <div class="container">
-            <div class="app-header">
-                <h1 class="app-title">🍽️ <span id="restaurantName">Restoran</span></h1>
-                <div class="user-info">
-                    <span class="welcome-text">Hoşgeldin, <span id="currentUser">Admin</span></span>
-                    <button onclick="cikisYap()" class="logout-btn">Çıkış</button>
-                </div>
+        <div class="app-header">
+            <h1 class="app-title">🍽️ Restoran Adisyon</h1>
+            <button class="logout-btn" onclick="logout()">Çıkış</button>
+        </div>
+
+        <div class="stats">
+            <div class="masa-count" id="masaCount">0</div>
+            <div>Toplam Gelen Masa</div>
+            
+            <div class="ciro-count" id="ciroCount">₺0.00</div>
+            <div>Toplam Ciro</div>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <h2 class="section-title">Masalar</h2>
+                <div class="masalar-grid" id="masalar"></div>
             </div>
 
-            <div class="mobile-warning">
-                📱 Mobil cihazınızda en iyi deneyim için yatay modda kullanın
-            </div>
-
-            <!-- İstatistik Kutusu -->
-            <div class="stats">
-                <div class="masa-count" id="masaCount">0</div>
-                <div class="masa-label">Toplam Gelen Masa</div>
-                
-                <div class="ciro-count" id="ciroCount">₺0.00</div>
-                <div class="ciro-label">Toplam Ciro</div>
-            </div>
-
-            <div class="main-content">
-                <!-- Masa Düzeni -->
-                <div class="section">
-                    <h2 class="section-title">Masalar</h2>
-                    <div class="masalar-grid" id="masalarGrid">
-                        <!-- Masalar JavaScript ile oluşturulacak -->
-                    </div>
-                </div>
-
-                <!-- Seçilen Masa Detayı -->
-                <div class="section">
-                    <div id="masaDetay">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                            </svg>
-                            <h3 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; color: #4b5563;">Masa Seçin</h3>
-                            <p style="font-size: 0.875rem;">Sipariş almak için soldaki masalardan birini seçin</p>
-                        </div>
+            <div class="section">
+                <div id="detay">
+                    <div class="empty-state">
+                        <h3>Masa Seçin</h3>
+                        <p>Sipariş almak için masayı seçin</p>
                     </div>
                 </div>
             </div>
@@ -644,352 +304,172 @@
     </div>
 
     <script>
-        // GLOBAL DEĞİŞKENLER
+        // Global değişkenler
         var masalar = {};
         var secilenMasa = null;
         var gelenMasaSayisi = 0;
-        var toplamCiroMiktari = 0;
-        var mevcutKullanici = null;
+        var toplamCiro = 0;
 
-        // KULLANICI YÖNETİMİ
-        function girisYap() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+        // Giriş
+        function login() {
+            console.log('Login fonksiyonu çalıştı!');
             
-            if (!username || !password) {
-                alert('Kullanıcı adı ve şifre giriniz!');
-                return;
-            }
-
-            // Basit doğrulama - gerçek uygulamada veritabanı kullanılır
-            const kullanicilar = JSON.parse(localStorage.getItem('restoranKullanicilari') || '{}');
+            var user = document.getElementById('username').value;
+            var pass = document.getElementById('password').value;
             
-            if (kullanicilar[username] && kullanicilar[username].password === password) {
-                mevcutKullanici = {
-                    username: username,
-                    restaurant: kullanicilar[username].restaurant
-                };
-                
-                document.getElementById('currentUser').textContent = username;
-                document.getElementById('restaurantName').textContent = kullanicilar[username].restaurant;
-                
+            console.log('Kullanıcı:', user, 'Şifre:', pass);
+            
+            if (user === 'admin' && pass === 'admin') {
+                console.log('Giriş başarılı!');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appScreen').style.display = 'block';
-                
                 basla();
             } else {
-                alert('Hatalı kullanıcı adı veya şifre!');
+                alert('Hatalı giriş! Kullanıcı: admin, Şifre: admin');
             }
         }
 
-        function kayitOl() {
-            const username = document.getElementById('registerUsername').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-            const restaurant = document.getElementById('registerRestaurant').value.trim();
-            
-            if (!username || !password || !restaurant) {
-                alert('Tüm alanları doldurunuz!');
-                return;
-            }
-
-            if (username.length < 3 || password.length < 3) {
-                alert('Kullanıcı adı ve şifre en az 3 karakter olmalı!');
-                return;
-            }
-
-            console.log('Kayıt denemesi:', username); // Debug
-
-            let kullanicilar;
-            try {
-                kullanicilar = JSON.parse(localStorage.getItem('restoranKullanicilari') || '{}');
-            } catch (error) {
-                console.error('localStorage okuma hatası:', error);
-                kullanicilar = {};
-            }
-            
-            if (kullanicilar[username]) {
-                alert('Bu kullanıcı adı zaten alınmış!');
-                return;
-            }
-
-            kullanicilar[username] = {
-                password: password,
-                restaurant: restaurant,
-                kayitTarihi: new Date().toISOString()
-            };
-
-            try {
-                localStorage.setItem('restoranKullanicilari', JSON.stringify(kullanicilar));
-                console.log('Kayıt başarılı, localStorage güncellendi'); // Debug
-                
-                alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
-                
-                // Kayıt formunu temizle
-                document.getElementById('registerUsername').value = '';
-                document.getElementById('registerPassword').value = '';
-                document.getElementById('registerRestaurant').value = '';
-                
-                girisEkraniniGoster();
-            } catch (error) {
-                console.error('localStorage yazma hatası:', error);
-                alert('Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        }
-
-        function kayitEkraniniGoster() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-        }
-
-        function girisEkraniniGoster() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-        }
-
-        function cikisYap() {
-            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('appScreen').style.display = 'none';
-                
-                // Formu temizle
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-                
-                mevcutKullanici = null;
-            }
-        }
-
-        // UYGULAMA FONKSİYONLARI
-        function basla() {
-            console.log('Sistem başlatılıyor...');
-            
-            // Masaları oluştur
-            for (let i = 1; i <= 12; i++) {
-                masalar[i] = {
-                    siparisler: [],
-                    toplam: 0
-                };
-            }
-            
-            masalariCiz();
-            sayilariGuncelle();
-        }
-
-        function masalariCiz() {
-            const grid = document.getElementById('masalarGrid');
-            grid.innerHTML = '';
-
-            for (let masaNo = 1; masaNo <= 12; masaNo++) {
-                const masa = masalar[masaNo];
-                const masaDiv = document.createElement('div');
-                
-                const bosMu = masa.siparisler.length === 0;
-                const seciliMi = secilenMasa == masaNo;
-                
-                masaDiv.className = `masa ${bosMu ? 'bos' : 'dolu'} ${seciliMi ? 'secili' : ''}`;
-                masaDiv.onclick = () => masaSecildi(masaNo);
-
-                masaDiv.innerHTML = `
-                    <div class="masa-no">Masa ${masaNo}</div>
-                    <div class="masa-info">${masa.siparisler.length} ürün</div>
-                    ${masa.toplam > 0 ? `<div class="masa-info">₺${masa.toplam.toFixed(2)}</div>` : ''}
-                    ${!bosMu ? `<div class="masa-badge">${masa.siparisler.length}</div>` : ''}
-                `;
-
-                grid.appendChild(masaDiv);
-            }
-        }
-
-        function masaSecildi(masaNo) {
-            secilenMasa = masaNo;
-            masalariCiz();
-            masaDetayiniGoster();
-        }
-
-        function masaDetayiniGoster() {
-            const detayDiv = document.getElementById('masaDetay');
-            const masa = masalar[secilenMasa];
-
-            detayDiv.innerHTML = `
-                <div class="detay-header">
-                    <h2 class="section-title">Masa ${secilenMasa} - Adisyon</h2>
-                    <button class="btn btn-close" onclick="masaDetayiniKapat()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="detay-form">
-                    <h3 class="form-title">Yeni Sipariş Ekle</h3>
-                    <div class="form-grid">
-                        <input type="text" id="urunAdi" placeholder="Ürün adı..." class="detay-input">
-                        <input type="number" id="urunFiyati" placeholder="Fiyat (₺)" class="detay-input">
-                    </div>
-                    <button class="btn btn-primary" onclick="siparisEkle()" style="width: 100%;">
-                        Sipariş Ekle
-                    </button>
-                </div>
-
-                <div class="siparisler">
-                    <h3 class="form-title">Siparişler</h3>
-                    <div class="siparis-list">
-                        ${masa.siparisler.length === 0 ? 
-                            '<div class="no-siparis">Henüz sipariş eklenmemiş</div>' :
-                            masa.siparisler.map(siparis => `
-                                <div class="siparis-item">
-                                    <div class="siparis-urun">${siparis.urun}</div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <span class="siparis-fiyat">₺${siparis.fiyat.toFixed(2)}</span>
-                                        <button class="btn btn-danger" onclick="siparisSil(${siparis.id})">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
-                </div>
-
-                ${masa.toplam > 0 ? `
-                    <div class="toplam-section">
-                        <div class="toplam-row">
-                            <span class="toplam-label">TOPLAM:</span>
-                            <span class="toplam-miktar">₺${masa.toplam.toFixed(2)}</span>
-                        </div>
-                        <button class="btn btn-success" onclick="odemeYapildi()" style="width: 100%; padding: 0.75rem;">
-                            Ödendi - Masayı Sıfırla
-                        </button>
-                    </div>
-                ` : ''}
-            `;
-        }
-
-        function siparisEkle() {
-            const urun = document.getElementById('urunAdi').value.trim();
-            const fiyat = parseFloat(document.getElementById('urunFiyati').value);
-            
-            if (!urun || !fiyat || fiyat <= 0) {
-                alert('Ürün adı ve fiyat giriniz!');
-                return;
-            }
-
-            const siparis = {
-                id: Date.now(),
-                urun: urun,
-                fiyat: fiyat
-            };
-
-            masalar[secilenMasa].siparisler.push(siparis);
-            masalar[secilenMasa].toplam += fiyat;
-
-            document.getElementById('urunAdi').value = '';
-            document.getElementById('urunFiyati').value = '';
-
-            masalariCiz();
-            masaDetayiniGoster();
-            sayilariGuncelle();
-        }
-
-        function siparisSil(siparisId) {
-            if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
-                const masa = masalar[secilenMasa];
-                const siparis = masa.siparisler.find(s => s.id === siparisId);
-                
-                masalar[secilenMasa].siparisler = masa.siparisler.filter(s => s.id !== siparisId);
-                masalar[secilenMasa].toplam -= siparis.fiyat;
-
-                masalariCiz();
-                masaDetayiniGoster();
-                sayilariGuncelle();
-            }
-        }
-
-        function odemeYapildi() {
-            if (confirm('Ödeme alındı olarak işaretlensin mi?')) {
-                console.log('ÖDEME BAŞLADI');
-                console.log('Önceki gelen masa sayısı:', gelenMasaSayisi);
-                console.log('Önceki toplam ciro:', toplamCiroMiktari);
-                
-                // MASA SAYISINI ARTIR
-                gelenMasaSayisi = gelenMasaSayisi + 1;
-                
-                // CIROYU ARTIR
-                toplamCiroMiktari = toplamCiroMiktari + masalar[secilenMasa].toplam;
-                
-                console.log('Yeni gelen masa sayısı:', gelenMasaSayisi);
-                console.log('Yeni toplam ciro:', toplamCiroMiktari);
-                
-                // MASAYI SIFIRLA
-                masalar[secilenMasa] = {
-                    siparisler: [],
-                    toplam: 0
-                };
-                
-                // EKRANI GÜNCELLE
-                sayilariGuncelle();
-                masaDetayiniKapat();
-                masalariCiz();
-                
-                console.log('ÖDEME BİTTİ');
-            }
-        }
-
-        function sayilariGuncelle() {
-            console.log('Sayılar güncelleniyor:', gelenMasaSayisi, toplamCiroMiktari);
-            
-            // Bekleyen siparişlerin toplamı
-            const bekleyenCiro = Object.values(masalar).reduce((toplam, masa) => toplam + masa.toplam, 0);
-            const tumCiro = toplamCiroMiktari + bekleyenCiro;
-            
-            // HTML'i güncelle
-            document.getElementById('masaCount').innerHTML = gelenMasaSayisi;
-            document.getElementById('ciroCount').innerHTML = '₺' + tumCiro.toFixed(2);
-        }
-
-        function masaDetayiniKapat() {
-            secilenMasa = null;
-            document.getElementById('masaDetay').innerHTML = `
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
-                    <h3 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; color: #4b5563;">Masa Seçin</h3>
-                    <p style="font-size: 0.875rem;">Sipariş almak için soldaki masalardan birini seçin</p>
-                </div>
-            `;
-            masalariCiz();
-        }
-
-        // SAYFA YÜKLENDİĞİNDE
-        window.onload = function() {
-            console.log('Sayfa yüklendi');
+        // Çıkış
+        function logout() {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('appScreen').style.display = 'none';
-        };
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
 
-        // Enter tuşu ile işlemler
+        // Uygulama başlat
+        function basla() {
+            for (var i = 1; i <= 12; i++) {
+                masalar[i] = { siparisler: [], toplam: 0 };
+            }
+            masalariCiz();
+            sayilariGuncelle();
+        }
+
+        // Masaları çiz
+        function masalariCiz() {
+            var grid = document.getElementById('masalar');
+            grid.innerHTML = '';
+            
+            for (var i = 1; i <= 12; i++) {
+                var masa = masalar[i];
+                var div = document.createElement('div');
+                div.className = 'masa ' + (masa.siparisler.length === 0 ? 'bos' : 'dolu') + (secilenMasa === i ? ' secili' : '');
+                div.onclick = (function(masaNo) {
+                    return function() { masaSec(masaNo); };
+                })(i);
+                div.innerHTML = 'Masa ' + i + '<br>' + masa.siparisler.length + ' ürün';
+                grid.appendChild(div);
+            }
+        }
+
+        // Masa seç
+        function masaSec(masaNo) {
+            secilenMasa = masaNo;
+            masalariCiz();
+            masaDetayiGoster();
+        }
+
+        // Masa detayı göster
+        function masaDetayiGoster() {
+            var masa = masalar[secilenMasa];
+            var html = '<h3>Masa ' + secilenMasa + '</h3>';
+            
+            html += '<div class="detay-form">';
+            html += '<input type="text" id="urun" class="detay-input" placeholder="Ürün adı">';
+            html += '<input type="number" id="fiyat" class="detay-input" placeholder="Fiyat">';
+            html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>';
+            html += '</div>';
+
+            html += '<div>';
+            for (var i = 0; i < masa.siparisler.length; i++) {
+                var siparis = masa.siparisler[i];
+                html += '<div class="siparis-item">';
+                html += '<span>' + siparis.urun + '</span>';
+                html += '<span>₺' + siparis.fiyat.toFixed(2) + ' <button onclick="siparisSil(' + i + ')">Sil</button></span>';
+                html += '</div>';
+            }
+            html += '</div>';
+
+            if (masa.toplam > 0) {
+                html += '<div style="margin-top: 1rem;">';
+                html += '<div><strong>TOPLAM: ₺' + masa.toplam.toFixed(2) + '</strong></div>';
+                html += '<button class="btn btn-success" onclick="odemeYapildi()">Ödendi - Masayı Sıfırla</button>';
+                html += '</div>';
+            }
+
+            document.getElementById('detay').innerHTML = html;
+        }
+
+        // Sipariş ekle
+        function siparisEkle() {
+            var urun = document.getElementById('urun').value;
+            var fiyat = parseFloat(document.getElementById('fiyat').value);
+            
+            if (!urun || !fiyat) {
+                alert('Ürün ve fiyat giriniz!');
+                return;
+            }
+
+            masalar[secilenMasa].siparisler.push({ urun: urun, fiyat: fiyat });
+            masalar[secilenMasa].toplam += fiyat;
+
+            masalariCiz();
+            masaDetayiGoster();
+            sayilariGuncelle();
+        }
+
+        // Sipariş sil
+        function siparisSil(index) {
+            var masa = masalar[secilenMasa];
+            masa.toplam -= masa.siparisler[index].fiyat;
+            masa.siparisler.splice(index, 1);
+
+            masalariCiz();
+            masaDetayiGoster();
+            sayilariGuncelle();
+        }
+
+        // Ödeme yapıldı
+        function odemeYapildi() {
+            gelenMasaSayisi++;
+            toplamCiro += masalar[secilenMasa].toplam;
+            
+            masalar[secilenMasa] = { siparisler: [], toplam: 0 };
+            
+            secilenMasa = null;
+            document.getElementById('detay').innerHTML = '<div class="empty-state"><h3>Masa Seçin</h3></div>';
+            
+            masalariCiz();
+            sayilariGuncelle();
+        }
+
+        // Sayıları güncelle
+        function sayilariGuncelle() {
+            var bekleyenCiro = 0;
+            for (var masaNo in masalar) {
+                bekleyenCiro += masalar[masaNo].toplam;
+            }
+            
+            document.getElementById('masaCount').innerHTML = gelenMasaSayisi;
+            document.getElementById('ciroCount').innerHTML = '₺' + (toplamCiro + bekleyenCiro).toFixed(2);
+        }
+
+        // Enter tuşu
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                // Giriş ekranındaysa
                 if (document.getElementById('loginScreen').style.display !== 'none') {
-                    if (document.getElementById('loginForm').style.display !== 'none') {
-                        girisYap();
-                    } else if (document.getElementById('registerForm').style.display !== 'none') {
-                        kayitOl();
-                    }
-                }
-                // Ana uygulamada sipariş ekleme
-                else if (secilenMasa) {
-                    const activeElement = document.activeElement;
-                    if (activeElement && (activeElement.id === 'urunAdi' || activeElement.id === 'urunFiyati')) {
-                        siparisEkle();
-                    }
+                    login();
+                } else if (secilenMasa && document.getElementById('urun')) {
+                    siparisEkle();
                 }
             }
         });
+
+        // Sayfa yüklendi
+        window.onload = function() {
+            console.log('Sayfa yüklendi!');
+        };
     </script>
 </body>
 </html>
