@@ -14,131 +14,87 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f9fafb;
-            padding: 0.5rem;
+            padding: 1rem;
         }
 
-        /* LOGIN EKRANI */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-            margin: 1rem;
-        }
-
-        .login-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #d1d5db;
-            border-radius: 0.5rem;
-            outline: none;
-            font-size: 1rem;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 1rem;
-        }
-
-        .info-box {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background: #f3f4f6;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        /* ANA UYGULAMA */
-        .app-container {
-            display: none;
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .app-header {
+        .header {
             background: white;
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
-        .app-title {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .header h1 {
+            font-size: 2rem;
             color: #1f2937;
-        }
-
-        .logout-btn {
-            padding: 0.5rem 1rem;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 0.375rem;
-            cursor: pointer;
         }
 
         .stats {
             background: white;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
+            padding: 2rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .reset-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .reset-button:hover {
+            background: #dc2626;
         }
 
         .masa-count {
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: bold;
             color: #2563eb;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .masa-label {
+            font-size: 1.125rem;
+            color: #2563eb;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
         }
 
         .ciro-count {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #16a34a;
-            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ciro-label {
+            font-size: 1.125rem;
+            color: #16a34a;
+            font-weight: 500;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         @media (min-width: 768px) {
@@ -152,13 +108,13 @@
             background: white;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
+            padding: 1.5rem;
         }
 
         .section-title {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: #1f2937;
         }
 
@@ -169,15 +125,16 @@
         }
 
         .masa {
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 0.5rem;
             border: 2px solid;
             cursor: pointer;
             text-align: center;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .masa:hover {
+            transform: scale(1.05);
         }
 
         .masa.bos {
@@ -193,108 +150,174 @@
         }
 
         .masa.secili {
-            box-shadow: 0 0 0 3px #60a5fa;
+            box-shadow: 0 0 0 4px #60a5fa;
+        }
+
+        .masa-no {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .masa-info {
+            font-size: 0.875rem;
         }
 
         .detay-form {
             background-color: #f9fafb;
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .detay-input {
+        .form-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .form-input {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .btn {
-            width: 100%;
-            padding: 0.75rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 0.375rem;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s;
         }
 
         .btn-primary {
             background-color: #3b82f6;
             color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
         }
 
         .btn-success {
             background-color: #16a34a;
             color: white;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .siparisler {
+            margin-bottom: 1.5rem;
         }
 
         .siparis-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem;
+            padding: 1rem;
             background-color: #f9fafb;
             border-radius: 0.375rem;
             margin-bottom: 0.5rem;
         }
 
+        .siparis-urun {
+            font-weight: 500;
+        }
+
+        .siparis-fiyat {
+            font-weight: 600;
+        }
+
+        .toplam-section {
+            border-top: 2px solid #e5e7eb;
+            padding-top: 1.5rem;
+        }
+
+        .toplam-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .toplam-label {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .toplam-miktar {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
         .empty-state {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             color: #6b7280;
+        }
+
+        .no-siparis {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
         }
     </style>
 </head>
 <body>
-    <!-- GİRİŞ EKRANI -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-card">
-            <h1 class="login-title">🍽️ Restoran Adisyon</h1>
-            
-            <div class="form-group">
-                <input type="text" id="username" class="form-input" placeholder="Kullanıcı adı: admin">
-            </div>
-            
-            <div class="form-group">
-                <input type="password" id="password" class="form-input" placeholder="Şifre: admin">
-            </div>
-            
-            <button class="login-btn" onclick="login()">Giriş Yap</button>
-            
-            <div class="info-box">
-                <strong>Test Hesabı:</strong><br>
-                Kullanıcı: admin<br>
-                Şifre: admin
-            </div>
-        </div>
-    </div>
-
-    <!-- ANA UYGULAMA -->
-    <div id="appScreen" class="app-container">
-        <div class="app-header">
-            <h1 class="app-title">🍽️ Restoran Adisyon</h1>
-            <button class="logout-btn" onclick="logout()">Çıkış</button>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Restoran Adisyon Sistemi</h1>
         </div>
 
+        <!-- İstatistikler -->
         <div class="stats">
-            <button class="reset-btn" onclick="istatistikleriSifirla()">🔄 Sıfırla</button>
+            <button class="reset-button" onclick="sifirla()">🔄 Sıfırla</button>
             <div class="masa-count" id="masaCount">0</div>
-            <div>Toplam Gelen Masa</div>
+            <div class="masa-label">Toplam Gelen Masa</div>
             
             <div class="ciro-count" id="ciroCount">₺0.00</div>
-            <div>Toplam Ciro</div>
+            <div class="ciro-label">Toplam Ciro</div>
         </div>
 
         <div class="main-content">
+            <!-- Masalar -->
             <div class="section">
                 <h2 class="section-title">Masalar</h2>
-                <div class="masalar-grid" id="masalar"></div>
+                <div class="masalar-grid" id="masalarGrid"></div>
             </div>
 
+            <!-- Masa Detayı -->
             <div class="section">
-                <div id="detay">
+                <div id="masaDetay">
                     <div class="empty-state">
                         <h3>Masa Seçin</h3>
                         <p>Sipariş almak için masayı seçin</p>
@@ -306,285 +329,306 @@
 
     <script>
         // Global değişkenler
-        var masalar = {};
-        var secilenMasa = null;
-        var gelenMasaSayisi = 0;
-        var toplamCiro = 0;
+        let masalar = {};
+        let secilenMasa = null;
+        let gelenMasaSayisi = 0;
+        let toplamCiro = 0;
 
-        // Giriş
-        function login() {
-            console.log('Login fonksiyonu çalıştı!');
-            
-            var user = document.getElementById('username').value;
-            var pass = document.getElementById('password').value;
-            
-            console.log('Kullanıcı:', user, 'Şifre:', pass);
-            
-            if (user === 'admin' && pass === 'admin') {
-                console.log('Giriş başarılı!');
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('appScreen').style.display = 'block';
-                basla();
-            } else {
-                alert('Hatalı giriş! Kullanıcı: admin, Şifre: admin');
-            }
-        }
-
-        // Çıkış
-        function logout() {
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('appScreen').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        // Uygulama başlat
+        // Sistem başlat
         function basla() {
-            for (var i = 1; i <= 12; i++) {
-                masalar[i] = { siparisler: [], toplam: 0 };
+            console.log('Sistem başlatılıyor...');
+            
+            // Masaları oluştur
+            for (let i = 1; i <= 12; i++) {
+                masalar[i] = {
+                    siparisler: [],
+                    toplam: 0
+                };
             }
+            
+            // Kaydedilmiş verileri yükle
+            veriYukle();
+            
+            // Ekranı güncelle
             masalariCiz();
-            sayilariGuncelle();
+            istatistikleriGuncelle();
+            
+            console.log('Sistem hazır!');
+        }
+
+        // Veri yükleme
+        function veriYukle() {
+            try {
+                const kayitliVeri = localStorage.getItem('restoranVerileri');
+                if (kayitliVeri) {
+                    const veri = JSON.parse(kayitliVeri);
+                    masalar = veri.masalar || masalar;
+                    gelenMasaSayisi = veri.gelenMasaSayisi || 0;
+                    toplamCiro = veri.toplamCiro || 0;
+                    console.log('Veriler yüklendi:', gelenMasaSayisi, 'masa,', toplamCiro, 'ciro');
+                }
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+            }
+        }
+
+        // Veri kaydetme
+        function veriKaydet() {
+            try {
+                const veri = {
+                    masalar: masalar,
+                    gelenMasaSayisi: gelenMasaSayisi,
+                    toplamCiro: toplamCiro,
+                    tarih: new Date().toISOString()
+                };
+                localStorage.setItem('restoranVerileri', JSON.stringify(veri));
+                console.log('Veriler kaydedildi');
+            } catch (error) {
+                console.error('Veri kaydetme hatası:', error);
+            }
         }
 
         // Masaları çiz
         function masalariCiz() {
-            var grid = document.getElementById('masalar');
+            const grid = document.getElementById('masalarGrid');
             grid.innerHTML = '';
-            
-            for (var i = 1; i <= 12; i++) {
-                var masa = masalar[i];
-                var div = document.createElement('div');
-                div.className = 'masa ' + (masa.siparisler.length === 0 ? 'bos' : 'dolu') + (secilenMasa === i ? ' secili' : '');
-                div.onclick = (function(masaNo) {
-                    return function() { masaSec(masaNo); };
-                })(i);
-                div.innerHTML = 'Masa ' + i + '<br>' + masa.siparisler.length + ' ürün';
+
+            for (let i = 1; i <= 12; i++) {
+                const masa = masalar[i];
+                const div = document.createElement('div');
+                
+                const bosMu = masa.siparisler.length === 0;
+                const seciliMi = secilenMasa === i;
+                
+                div.className = `masa ${bosMu ? 'bos' : 'dolu'} ${seciliMi ? 'secili' : ''}`;
+                div.onclick = () => masaSecildi(i);
+
+                div.innerHTML = `
+                    <div class="masa-no">Masa ${i}</div>
+                    <div class="masa-info">${masa.siparisler.length} ürün</div>
+                    ${masa.toplam > 0 ? `<div class="masa-info">₺${masa.toplam.toFixed(2)}</div>` : ''}
+                `;
+
                 grid.appendChild(div);
             }
         }
 
-        // Masa seç
-        function masaSec(masaNo) {
+        // Masa seçildi
+        function masaSecildi(masaNo) {
             secilenMasa = masaNo;
             masalariCiz();
-            masaDetayiGoster();
+            masaDetayiniGoster();
         }
 
-        // Masa detayı göster
-        function masaDetayiGoster() {
-            var masa = masalar[secilenMasa];
-            var html = '<h3>Masa ' + secilenMasa + '</h3>';
-            
-            html += '<div class="detay-form">';
-            html += '<input type="text" id="urun" class="detay-input" placeholder="Ürün adı">';
-            html += '<input type="number" id="fiyat" class="detay-input" placeholder="Fiyat">';
-            html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>';
-            html += '</div>';
+        // Masa detayını göster
+        function masaDetayiniGoster() {
+            const detayDiv = document.getElementById('masaDetay');
+            const masa = masalar[secilenMasa];
 
-            html += '<div>';
-            for (var i = 0; i < masa.siparisler.length; i++) {
-                var siparis = masa.siparisler[i];
-                html += '<div class="siparis-item">';
-                html += '<span>' + siparis.urun + '</span>';
-                html += '<span>₺' + siparis.fiyat.toFixed(2) + ' <button onclick="siparisSil(' + i + ')">Sil</button></span>';
-                html += '</div>';
-            }
-            html += '</div>';
+            detayDiv.innerHTML = `
+                <h2 class="section-title">Masa ${secilenMasa} - Adisyon</h2>
 
-            if (masa.toplam > 0) {
-                html += '<div style="margin-top: 1rem;">';
-                html += '<div><strong>TOPLAM: ₺' + masa.toplam.toFixed(2) + '</strong></div>';
-                html += '<button class="btn btn-success" onclick="odemeYapildi()">Ödendi - Masayı Sıfırla</button>';
-                html += '</div>';
-            }
+                <!-- Sipariş Ekleme -->
+                <div class="detay-form">
+                    <h3 class="form-title">Yeni Sipariş Ekle</h3>
+                    <input type="text" id="urunAdi" placeholder="Ürün adı..." class="form-input">
+                    <input type="number" id="urunFiyati" placeholder="Fiyat (₺)" class="form-input">
+                    <button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>
+                </div>
 
-            document.getElementById('detay').innerHTML = html;
-        }
+                <!-- Siparişler -->
+                <div class="siparisler">
+                    <h3 class="form-title">Siparişler</h3>
+                    <div>
+                        ${masa.siparisler.length === 0 ? 
+                            '<div class="no-siparis">Henüz sipariş eklenmemiş</div>' :
+                            masa.siparisler.map((siparis, index) => `
+                                <div class="siparis-item">
+                                    <div class="siparis-urun">${siparis.urun}</div>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <span class="siparis-fiyat">₺${siparis.fiyat.toFixed(2)}</span>
+                                        <button class="btn btn-danger" onclick="siparisSil(${index})">Sil</button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
 
-        // İstatistikleri sıfırla
-        function istatistikleriSifirla() {
-            if (confirm('Toplam gelen masa sayısı ve ciro sıfırlanacak!\n\nBu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
-                console.log('İstatistikler sıfırlanıyor...');
-                console.log('Önceki değerler - Masa:', gelenMasaSayisi, 'Ciro:', toplamCiro);
-                
-                gelenMasaSayisi = 0;
-                toplamCiro = 0;
-                
-                // Aktif siparişleri koru, sadece istatistikleri sıfırla
-                sayilariGuncelle();
-                otomatikKaydet();
-                
-                console.log('İstatistikler sıfırlandı!');
-                alert('✅ İstatistikler sıfırlandı!\n\nAktif siparişler korundu, sadece toplam sayaçlar sıfırlandı.');
-            }
-        }
-
-        // Otomatik kaydet
-        function otomatikKaydet() {
-            try {
-                var veri = {
-                    masalar: masalar,
-                    gelenMasaSayisi: gelenMasaSayisi,
-                    toplamCiro: toplamCiro,
-                    sonGuncelleme: new Date().getTime()
-                };
-                
-                localStorage.setItem('restoranVeri', JSON.stringify(veri));
-                console.log('Veri otomatik kaydedildi:', new Date().toLocaleTimeString());
-            } catch(e) {
-                console.error('Otomatik kaydetme hatası:', e);
-            }
+                ${masa.toplam > 0 ? `
+                    <!-- Toplam ve Ödeme -->
+                    <div class="toplam-section">
+                        <div class="toplam-row">
+                            <span class="toplam-label">TOPLAM:</span>
+                            <span class="toplam-miktar">₺${masa.toplam.toFixed(2)}</span>
+                        </div>
+                        <button class="btn btn-success" onclick="console.log('Button basıldı!'); odemeYapildi();">
+                            ✅ Ödendi - Masayı Sıfırla
+                        </button>
+                    </div>
+                ` : ''}
+            `;
         }
 
         // Sipariş ekle
         function siparisEkle() {
-            var urun = document.getElementById('urun').value;
-            var fiyat = parseFloat(document.getElementById('fiyat').value);
+            const urun = document.getElementById('urunAdi').value.trim();
+            const fiyat = parseFloat(document.getElementById('urunFiyati').value);
             
-            if (!urun || !fiyat) {
-                alert('Ürün ve fiyat giriniz!');
+            if (!urun || !fiyat || fiyat <= 0) {
+                alert('Ürün adı ve geçerli bir fiyat giriniz!');
                 return;
             }
 
-            masalar[secilenMasa].siparisler.push({ urun: urun, fiyat: fiyat });
+            const siparis = {
+                urun: urun,
+                fiyat: fiyat,
+                zaman: new Date().toLocaleTimeString()
+            };
+
+            masalar[secilenMasa].siparisler.push(siparis);
             masalar[secilenMasa].toplam += fiyat;
 
+            // Formu temizle
+            document.getElementById('urunAdi').value = '';
+            document.getElementById('urunFiyati').value = '';
+
+            // Ekranları güncelle
             masalariCiz();
-            masaDetayiGoster();
-            sayilariGuncelle();
-            otomatikKaydet(); // Hemen kaydet
+            masaDetayiniGoster();
+            istatistikleriGuncelle();
+            veriKaydet();
         }
 
         // Sipariş sil
         function siparisSil(index) {
-            var masa = masalar[secilenMasa];
-            masa.toplam -= masa.siparisler[index].fiyat;
-            masa.siparisler.splice(index, 1);
+            if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
+                const masa = masalar[secilenMasa];
+                const silinecekSiparis = masa.siparisler[index];
+                
+                masa.toplam -= silinecekSiparis.fiyat;
+                masa.siparisler.splice(index, 1);
 
-            masalariCiz();
-            masaDetayiGoster();
-            sayilariGuncelle();
-            otomatikKaydet(); // Hemen kaydet
+                masalariCiz();
+                masaDetayiniGoster();
+                istatistikleriGuncelle();
+                veriKaydet();
+            }
         }
 
         // Ödeme yapıldı
         function odemeYapildi() {
-            gelenMasaSayisi++;
-            toplamCiro += masalar[secilenMasa].toplam;
+            console.log('Ödendi butonu basıldı!');
+            console.log('Seçilen masa:', secilenMasa);
             
-            masalar[secilenMasa] = { siparisler: [], toplam: 0 };
-            
-            secilenMasa = null;
-            document.getElementById('detay').innerHTML = '<div class="empty-state"><h3>Masa Seçin</h3></div>';
-            
-            masalariCiz();
-            sayilariGuncelle();
-            otomatikKaydet(); // Hemen kaydet
-        }
-
-        // Sayıları güncelle
-        function sayilariGuncelle() {
-            var bekleyenCiro = 0;
-            for (var masaNo in masalar) {
-                bekleyenCiro += masalar[masaNo].toplam;
+            if (!secilenMasa) {
+                console.log('HATA: Seçilen masa yok!');
+                alert('Hata: Masa seçili değil!');
+                return;
             }
             
-            document.getElementById('masaCount').innerHTML = gelenMasaSayisi;
-            document.getElementById('ciroCount').innerHTML = '₺' + (toplamCiro + bekleyenCiro).toFixed(2);
+            console.log('Masa toplam:', masalar[secilenMasa].toplam);
+            
+            // Direkt işlem yap, onay sorma
+            console.log('Ödeme işlemi başlıyor...');
+            
+            const eskiGelenMasa = gelenMasaSayisi;
+            const eskiCiro = toplamCiro;
+            const masaToplam = masalar[secilenMasa].toplam;
+            
+            console.log('Önceki değerler:', eskiGelenMasa, 'masa,', eskiCiro, 'ciro');
+            
+            // İstatistikleri güncelle
+            gelenMasaSayisi = gelenMasaSayisi + 1;
+            toplamCiro = toplamCiro + masaToplam;
+            
+            console.log('Yeni değerler:', gelenMasaSayisi, 'masa,', toplamCiro, 'ciro');
+            
+            // Masayı sıfırla
+            masalar[secilenMasa] = {
+                siparisler: [],
+                toplam: 0
+            };
+            
+            console.log('Masa sıfırlandı');
+            
+            // Masa seçimini kaldır
+            const eskiMasa = secilenMasa;
+            secilenMasa = null;
+            
+            console.log('Masa seçimi kaldırıldı:', eskiMasa, '->', secilenMasa);
+            
+            // Ekranları güncelle
+            document.getElementById('masaDetay').innerHTML = `
+                <div class="empty-state">
+                    <h3>Masa Seçin</h3>
+                    <p>Sipariş almak için masayı seçin</p>
+                </div>
+            `;
+            
+            masalariCiz();
+            istatistikleriGuncelle();
+            veriKaydet();
+            
+            console.log('Tüm güncellemeler tamamlandı');
+            alert('✅ Ödeme alındı! Masa sıfırlandı.');
         }
 
-        // İstatistikleri sıfırla
-        function istatistikleriSifirla() {
-            if (confirm('Toplam gelen masa sayısı ve ciro sıfırlanacak!\n\nBu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
-                console.log('İstatistikler sıfırlanıyor...');
-                console.log('Önceki değerler - Masa:', gelenMasaSayisi, 'Ciro:', toplamCiro);
+        // İstatistikleri güncelle
+        function istatistikleriGuncelle() {
+            // Bekleyen siparişlerin toplamı
+            const bekleyenCiro = Object.values(masalar).reduce((toplam, masa) => toplam + masa.toplam, 0);
+            const tumCiro = toplamCiro + bekleyenCiro;
+            
+            // HTML'i güncelle
+            document.getElementById('masaCount').textContent = gelenMasaSayisi;
+            document.getElementById('ciroCount').textContent = `₺${tumCiro.toFixed(2)}`;
+        }
+
+        // Sıfırla fonksiyonu
+        function sifirla() {
+            console.log('Sıfırla butonu basıldı!');
+            
+            if (confirm('⚠️ UYARI: Toplam gelen masa sayısı ve ciro sıfırlanacak!\n\nBu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+                console.log('Kullanıcı sıfırlamayı onayladı');
                 
+                const eskiMasa = gelenMasaSayisi;
+                const eskiCiro = toplamCiro;
+                
+                // İstatistikleri sıfırla
                 gelenMasaSayisi = 0;
                 toplamCiro = 0;
                 
-                // Aktif siparişleri koru, sadece istatistikleri sıfırla
-                sayilariGuncelle();
-                otomatikKaydet();
+                console.log('Sıfırlama yapıldı:', eskiMasa, '->', gelenMasaSayisi, '|', eskiCiro, '->', toplamCiro);
                 
-                console.log('İstatistikler sıfırlandı!');
-                alert('✅ İstatistikler sıfırlandı!\n\nAktif siparişler korundu, sadece toplam sayaçlar sıfırlandı.');
+                // Ekranı güncelle
+                istatistikleriGuncelle();
+                veriKaydet();
+                
+                alert(`✅ İstatistikler sıfırlandı!\n\n• Gelen masa: ${eskiMasa} → 0\n• Ciro: ₺${eskiCiro.toFixed(2)} → ₺0.00\n\nAktif siparişler korundu.`);
+            } else {
+                console.log('Kullanıcı sıfırlamayı iptal etti');
             }
         }
 
-        // Enter tuşu
+        // Enter tuşu ile sipariş ekleme
         document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                if (document.getElementById('loginScreen').style.display !== 'none') {
-                    login();
-                } else if (secilenMasa && document.getElementById('urun')) {
+            if (e.key === 'Enter' && secilenMasa) {
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.id === 'urunAdi' || activeElement.id === 'urunFiyati')) {
                     siparisEkle();
                 }
             }
         });
 
-        // Sayfa yüklendi
-        window.onload = function() {
-            console.log('Sayfa yüklendi!');
+        // Sayfa yüklendiğinde sistemi başlat
+        window.addEventListener('load', function() {
+            console.log('Sayfa yüklendi, sistem başlatılıyor...');
+            basla();
             
-            // URL'den veri yüklemeyi kontrol et
-            var urlParams = new URLSearchParams(window.location.search);
-            var veriStr = urlParams.get('data');
-            
-            if (veriStr) {
-                try {
-                    var veri = JSON.parse(decodeURIComponent(veriStr));
-                    masalar = veri.masalar || {};
-                    gelenMasaSayisi = veri.gelenMasaSayisi || 0;
-                    toplamCiro = veri.toplamCiro || 0;
-                    console.log('URL\'den veri yüklendi:', veri);
-                    alert('Veri başarıyla yüklendi! ' + gelenMasaSayisi + ' masa, ₺' + toplamCiro.toFixed(2) + ' ciro');
-                } catch(e) {
-                    console.error('URL veri hatası:', e);
-                    alert('URL\'deki veri bozuk!');
-                }
-            }
-            
-            // Otomatik giriş yap (admin olarak)
-            setTimeout(function() {
-                console.log('Otomatik giriş yapılıyor...');
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('appScreen').style.display = 'block';
-                basla();
-            }, 500);
-        };
-
-        // Veri paylaş
-        function veriPaylas() {
-            var veri = {
-                masalar: masalar,
-                gelenMasaSayisi: gelenMasaSayisi,
-                toplamCiro: toplamCiro,
-                tarih: new Date().toLocaleString()
-            };
-            
-            var veriStr = encodeURIComponent(JSON.stringify(veri));
-            var baseUrl = window.location.origin + window.location.pathname;
-            var paylasilacakUrl = baseUrl + '?data=' + veriStr;
-            
-            // URL'i panoya kopyala
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(paylasilacakUrl).then(function() {
-                    alert('✅ Veri linki panoya kopyalandı!\n\nDiğer cihazda bu linki açarak verilerinizi yükleyebilirsiniz.\n\nVeri içeriği:\n• ' + gelenMasaSayisi + ' gelen masa\n• ₺' + toplamCiro.toFixed(2) + ' toplam ciro\n• Aktif siparişler');
-                }).catch(function() {
-                    gosterUrlDialog(paylasilacakUrl);
-                });
-            } else {
-                gosterUrlDialog(paylasilacakUrl);
-            }
-        }
-
-        // URL dialog göster
-        function gosterUrlDialog(url) {
-            var kısaUrl = url.length > 100 ? url.substring(0, 100) + '...' : url;
-            alert('📋 Bu linki kopyalayıp diğer cihazda açın:\n\n' + kısaUrl + '\n\n(Tam linki console\'da görebilirsiniz)');
-            console.log('Paylaşım linki:', url);
-        }
+            // Otomatik kaydetme (her 10 saniyede)
+            setInterval(veriKaydet, 10000);
+        });
     </script>
 </body>
 </html>
