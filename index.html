@@ -1,4 +1,76 @@
-<!DOCTYPE html>
+// Telefon fiş yazdır
+        function telefonFisYazdir() {
+            if (!secilenTelefon) {
+                alert('Telefon seçili değil!');
+                return;
+            }
+            
+            var telefon = telefonlar[secilenTelefon];
+            if (telefon.siparisler.length === 0) {
+                alert('Bu telefonda sipariş yok!');
+                return;
+            }
+            
+            var tarih = new Date().toLocaleDateString('tr-TR');
+            var saat = new Date().toLocaleTimeString('tr-TR');
+            
+            // Mevcut sayfa içeriğini sakla
+            var originalContent = document.body.innerHTML;
+            
+            // Basit fiş HTML'i oluştur
+            var fisHTML = 
+                '<div style="font-family: Courier New, monospace; max-width: 400px; margin: 20px auto; padding: 20px; line-height: 1.6;">' +
+                '<div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 1rem; margin-bottom: 1rem;">' +
+                '<div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; text-decoration: underline;">ADİSYON / HESAP FİŞİ</div>' +
+                '<div style="margin-bottom: 0.3rem;"><strong>Telefon No:</strong> ' + (secilenTelefon - 6) + '</div>' +
+                '<div style="margin-bottom: 0.3rem;"><strong>Tarih:</strong> ' + tarih + '</div>' +
+                '<div style="margin-bottom: 0.3rem;"><strong>Saat:</strong> ' + saat + '</div>' +
+                '<div style="margin-bottom: 0.3rem;"><strong>Fiş No:</strong> ' + Date.now().toString().slice(-6) + '</div>' +
+                '</div>' +
+                '<div style="border-bottom: 1px solid #000; padding-bottom: 0.5rem; margin-bottom: 1rem;">' +
+                '<div style="display: flex; justify-content: space-between; font-weight: bold;">' +
+                '<span>ÜRÜN ADI</span><span>TUTAR</span>' +
+                '</div>' +
+                '</div>';
+            
+            // Siparişleri ekle
+            for (var i = 0; i < telefon.siparisler.length; i++) {
+                var siparis = telefon.siparisler[i];
+                var toplamFiyat = siparis.adet * siparis.birimFiyat;
+                
+                fisHTML += '<div style="margin-bottom: 0.8rem;">' +
+                          '<div style="font-weight: bold;">' + (i + 1) + '. ' + siparis.urun + '</div>' +
+                          '<div style="color: #666; font-size: 0.9rem;">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
+                
+                // Not varsa ekle
+                if (siparis.not && siparis.not.trim() !== '') {
+                    fisHTML += '<div style="color: #8b5cf6; font-style: italic; font-size: 0.9rem;">Not: ' + siparis.not + '</div>';
+                }
+                
+                fisHTML += '<div style="text-align: right; font-weight: bold; margin-top: 0.3rem;">₺' + toplamFiyat.toFixed(2) + '</div>' +
+                          '</div>';
+            }
+            
+            fisHTML += 
+                '</div>' +
+                '<div style="text-align: center; margin-top: 2rem;">' +
+                '<button onclick="window.print()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">📄 Yazdır</button>' +
+                '<button onclick="fisKapat()" style="padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer;">❌ Kapat</button>' +
+                '</div>' +
+                '</div>';
+            
+            // Sayfayı fiş ile değiştir
+            document.body.innerHTML = fisHTML;
+            
+            // Fiş kapatma fonksiyonu
+            window.fisKapat = function() {
+                document.body.innerHTML = originalContent;
+                // Sistemin yeniden çalışması için
+                setTimeout(function() {
+                    basla();
+                }, 100);
+            };
+        }<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
