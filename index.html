@@ -5,461 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restoran Adisyon Sistemi</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 1rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 2.5rem;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .stats-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .reset-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .main-stats {
-            text-align: center;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-big {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 1.25rem;
-            color: #2563eb;
-            font-weight: 500;
-        }
-
-        .stat-divider {
-            font-size: 2rem;
-            color: #6b7280;
-        }
-
-        .ciro-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            text-align: center;
-        }
-
-        .ciro-item {
-            padding: 1rem;
-            border-radius: 8px;
-            border: 2px solid;
-        }
-
-        .ciro-toplam {
-            background: #dcfce7;
-            border-color: #16a34a;
-        }
-
-        .ciro-kart {
-            background: #dbeafe;
-            border-color: #3b82f6;
-        }
-
-        .ciro-nakit {
-            background: #fef3c7;
-            border-color: #f59e0b;
-        }
-
-        .ciro-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 1rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 2rem; text-align: center; }
+        .title { font-size: 2.5rem; color: #333; font-weight: bold; }
+        .stats-container { background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; position: relative; }
+        .reset-btn { position: absolute; top: 1rem; right: 1rem; background: #ef4444; color: white; border: none; border-radius: 6px; padding: 0.75rem 1rem; cursor: pointer; font-weight: bold; }
+        .main-stats { text-align: center; margin-bottom: 2rem; display: flex; justify-content: center; gap: 3rem; align-items: center; }
+        .stat-item { text-align: center; }
+        .stat-big { font-size: 3rem; font-weight: bold; color: #2563eb; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1.25rem; color: #2563eb; font-weight: 500; }
+        .stat-divider { font-size: 2rem; color: #6b7280; }
+        .ciro-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center; }
+        .ciro-item { padding: 1rem; border-radius: 8px; border: 2px solid; }
+        .ciro-toplam { background: #dcfce7; border-color: #16a34a; }
+        .ciro-kart { background: #dbeafe; border-color: #3b82f6; }
+        .ciro-nakit { background: #fef3c7; border-color: #f59e0b; }
+        .ciro-value { font-size: 1.8rem; font-weight: bold; margin-bottom: 0.5rem; }
         .ciro-toplam .ciro-value { color: #16a34a; }
         .ciro-kart .ciro-value { color: #3b82f6; }
         .ciro-nakit .ciro-value { color: #f59e0b; }
-
-        .ciro-label {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
+        .ciro-label { font-size: 1rem; font-weight: 500; }
         .ciro-toplam .ciro-label { color: #16a34a; }
         .ciro-kart .ciro-label { color: #3b82f6; }
         .ciro-nakit .ciro-label { color: #f59e0b; }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 2rem;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .masalar-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .masa {
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 3px solid;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .masa:hover {
-            transform: scale(1.05);
-        }
-
-        .masa.bos {
-            background: #dcfce7;
-            border-color: #16a34a;
-            color: #166534;
-        }
-
-        .masa.dolu {
-            background: #fed7aa;
-            border-color: #f97316;
-            color: #9a3412;
-        }
-
-        .masa.secili {
-            box-shadow: 0 0 0 4px #3b82f6;
-        }
-
-        .masa-no {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .masa-info {
-            font-size: 0.9rem;
-        }
-
-        .siparis-form {
-            background: #f8fafc;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .form-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        .input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .input-not {
-            background: #f0f8ff;
-            border: 2px dashed #3b82f6;
-        }
-
-        .boyut-container {
-            margin-bottom: 1rem;
-        }
-
-        .boyut-btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            margin: 0 0.5rem 0.5rem 0;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .boyut-btn:hover {
-            border-color: #3b82f6;
-            background: #f0f8ff;
-        }
-
-        .boyut-btn.active {
-            border-color: #3b82f6;
-            background: #3b82f6;
-            color: white;
-        }
-
-        .urun-dropdown {
-            position: relative;
-        }
-
-        .urun-liste {
-            position: absolute;
-            z-index: 1000;
-            background: white;
-            border: 2px solid #3b82f6;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-            display: none;
-        }
-
-        .urun-item {
-            padding: 0.75rem;
-            cursor: pointer;
-            border-bottom: 1px solid #e5e7eb;
-            transition: background-color 0.2s;
-        }
-
-        .urun-item:hover {
-            background: #f8fafc;
-        }
-
-        .urun-item:last-child {
-            border-bottom: none;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-
-        .btn-print {
-            background: #8b5cf6;
-            color: white;
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-
-        .btn-print:hover {
-            background: #7c3aed;
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .siparisler {
-            margin-bottom: 2rem;
-        }
-
-        .siparis {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-        }
-
-        .siparis-info {
-            flex: 1;
-        }
-
-        .siparis-urun {
-            font-weight: bold;
-            margin-bottom: 0.25rem;
-        }
-
-        .siparis-detay {
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        .siparis-not {
-            font-size: 0.9rem;
-            color: #8b5cf6;
-            font-style: italic;
-        }
-
-        .siparis-fiyat {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-right: 1rem;
-        }
-
-        .toplam-alan {
-            border-top: 3px solid #e5e7eb;
-            padding-top: 2rem;
-        }
-
-        .toplam-satir {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .toplam-label {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .toplam-tutar {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #16a34a;
-        }
-
-        .odeme-secim {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .odeme-btn {
-            padding: 1.5rem;
-            border: 3px solid;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.2s;
-        }
-
-        .odeme-btn.kart {
-            background: #dbeafe;
-            border-color: #3b82f6;
-            color: #1e40af;
-        }
-
-        .odeme-btn.kart:hover {
-            background: #bfdbfe;
-            transform: scale(1.05);
-        }
-
-        .odeme-btn.nakit {
-            background: #fef3c7;
-            border-color: #f59e0b;
-            color: #92400e;
-        }
-
-        .odeme-btn.nakit:hover {
-            background: #fde68a;
-            transform: scale(1.05);
-        }
-
-        .bos-mesaj {
-            text-align: center;
-            padding: 3rem;
-            color: #6b7280;
-        }
-
-        .siparis-yok {
-            text-align: center;
-            padding: 2rem;
-            color: #6b7280;
-        }
+        .main-content { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 768px) { .main-content { grid-template-columns: 1fr 1fr; } }
+        .card { background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 2rem; }
+        .card-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: #333; }
+        .masalar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .masa { padding: 1.5rem; border-radius: 8px; border: 3px solid; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .masa:hover { transform: scale(1.05); }
+        .masa.bos { background: #dcfce7; border-color: #16a34a; color: #166534; }
+        .masa.dolu { background: #fed7aa; border-color: #f97316; color: #9a3412; }
+        .masa.secili { box-shadow: 0 0 0 4px #3b82f6; }
+        .masa-no { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .masa-info { font-size: 0.9rem; }
+        .siparis-form { background: #f8fafc; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; }
+        .form-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; color: #333; }
+        .input { width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 6px; margin-bottom: 1rem; font-size: 1rem; }
+        .input:focus { outline: none; border-color: #3b82f6; }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .input-not { background: #f0f8ff; border: 2px dashed #3b82f6; }
+        .boyut-container { margin-bottom: 1rem; }
+        .boyut-btn { display: inline-block; padding: 0.75rem 1.5rem; margin: 0 0.5rem 0.5rem 0; border: 2px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        .boyut-btn:hover { border-color: #3b82f6; background: #f0f8ff; }
+        .boyut-btn.active { border-color: #3b82f6; background: #3b82f6; color: white; }
+        .urun-dropdown { position: relative; }
+        .urun-liste { position: absolute; z-index: 1000; background: white; border: 2px solid #3b82f6; border-radius: 6px; max-height: 200px; overflow-y: auto; width: 100%; display: none; }
+        .urun-item { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid #e5e7eb; transition: background-color 0.2s; }
+        .urun-item:hover { background: #f8fafc; }
+        .urun-item:last-child { border-bottom: none; }
+        .extras-container { margin-bottom: 1rem; }
+        .extras-dropdown { position: relative; margin-bottom: 1rem; }
+        .extras-liste { position: absolute; z-index: 999; background: white; border: 2px solid #0ea5e9; border-radius: 6px; max-height: 200px; overflow-y: auto; width: 100%; display: none; }
+        .extras-item { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid #e5e7eb; transition: background-color 0.2s; display: flex; justify-content: space-between; }
+        .extras-item:hover { background: #f0f9ff; }
+        .extras-item:last-child { border-bottom: none; }
+        .secili-extras { margin-bottom: 1rem; }
+        .extra-tag { display: inline-block; background: #0ea5e9; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin: 0.25rem; font-size: 0.9rem; position: relative; cursor: pointer; }
+        .extra-tag .remove { margin-left: 0.5rem; font-weight: bold; }
+        .extra-tag:hover { background: #0284c7; }
+        .btn { padding: 1rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.2s; }
+        .btn-primary { background: #3b82f6; color: white; width: 100%; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-print { background: #8b5cf6; color: white; width: 100%; margin-bottom: 1rem; }
+        .btn-print:hover { background: #7c3aed; }
+        .btn-danger { background: #ef4444; color: white; padding: 0.5rem 1rem; font-size: 0.9rem; }
+        .btn-danger:hover { background: #dc2626; }
+        .siparisler { margin-bottom: 2rem; }
+        .siparis { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8fafc; border-radius: 6px; margin-bottom: 0.5rem; }
+        .siparis-info { flex: 1; }
+        .siparis-urun { font-weight: bold; margin-bottom: 0.25rem; }
+        .siparis-detay { font-size: 0.9rem; color: #6b7280; }
+        .siparis-extras { font-size: 0.9rem; color: #0ea5e9; }
+        .siparis-not { font-size: 0.9rem; color: #8b5cf6; font-style: italic; }
+        .siparis-fiyat { font-weight: bold; font-size: 1.1rem; margin-right: 1rem; }
+        .toplam-alan { border-top: 3px solid #e5e7eb; padding-top: 2rem; }
+        .toplam-satir { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .toplam-label { font-size: 1.5rem; font-weight: bold; }
+        .toplam-tutar { font-size: 2rem; font-weight: bold; color: #16a34a; }
+        .odeme-secim { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .odeme-btn { padding: 1.5rem; border: 3px solid; border-radius: 8px; cursor: pointer; text-align: center; font-weight: bold; font-size: 1.1rem; transition: all 0.2s; }
+        .odeme-btn.kart { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
+        .odeme-btn.kart:hover { background: #bfdbfe; transform: scale(1.05); }
+        .odeme-btn.nakit { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+        .odeme-btn.nakit:hover { background: #fde68a; transform: scale(1.05); }
+        .bos-mesaj { text-align: center; padding: 3rem; color: #6b7280; }
+        .siparis-yok { text-align: center; padding: 2rem; color: #6b7280; }
     </style>
 </head>
 <body>
@@ -470,7 +104,6 @@
 
         <div class="stats-container">
             <button class="reset-btn" onclick="sifirla()">🔄 Sıfırla</button>
-            
             <div class="main-stats">
                 <div class="stat-item">
                     <div class="stat-big" id="masaSayisi">0</div>
@@ -482,7 +115,6 @@
                     <div class="stat-label">Toplam Telefon</div>
                 </div>
             </div>
-
             <div class="ciro-stats">
                 <div class="ciro-item ciro-toplam">
                     <div class="ciro-value" id="toplamCiro">₺0.00</div>
@@ -504,7 +136,6 @@
                 <h2 class="card-title">Masalar & Telefonlar</h2>
                 <div class="masalar-grid" id="masalarGrid"></div>
             </div>
-
             <div class="card">
                 <div id="detayAlani">
                     <div class="bos-mesaj">
@@ -517,25 +148,25 @@
     </div>
 
     <script>
-        var masalar = {};
-        var telefonlar = {};
-        var secilen = null;
-        var secilenTip = null;
-        var toplamMasa = 0;
-        var toplamTelefon = 0;
-        var toplamCiro = 0;
-        var kartCiro = 0;
-        var nakitCiro = 0;
-        var secilenBoyut = '';
+        var masalar = {}, telefonlar = {}, secilen = null, secilenTip = null;
+        var toplamMasa = 0, toplamTelefon = 0, toplamCiro = 0, kartCiro = 0, nakitCiro = 0, secilenBoyut = '';
+        var secilenExtras = [];
 
-        var urunler = [
-            "pesto alfredo", "köri alfredo", "penne alfredo", "ton ton", "ton balıklı special",
-            "kremantar", "napoliten", "krepesto", "dori penne", "spagetti bolonez",
-            "4 peynirli", "arabiata", "sosili penne", "lezzet harikası", "kekikli",
-            "misket makarna", "mexico penne", "tantuni penne", "çıtır", "kırmızı orman",
-            "orman perisi", "barbeki tavuk", "köri tavuk", "pesto tavuk", "4 peynir tavuk",
-            "kremalı mantarlı tavuk", "kekikli tavuk", "kremantarlı tavuk", "sweet chili tavuk",
-            "milanesse tavuk", "mexico tavuk"
+        var urunler = ["pesto alfredo", "köri alfredo", "penne alfredo", "ton ton", "ton balıklı special", "kremantar", "napoliten", "krepesto", "dori penne", "spagetti bolonez", "4 peynirli", "arabiata", "sosili penne", "lezzet harikası", "kekikli", "misket makarna", "mexico penne", "tantuni penne", "çıtır", "kırmızı orman", "orman perisi", "barbeki tavuk", "köri tavuk", "pesto tavuk", "4 peynir tavuk", "kremalı mantarlı tavuk", "kekikli tavuk", "kremantarlı tavuk", "sweet chili tavuk", "milanesse tavuk", "mexico tavuk"];
+
+        var extralar = [
+            {ad: "extra mozerella", fiyat: 30},
+            {ad: "extra mısır", fiyat: 30},
+            {ad: "extra chedar", fiyat: 30},
+            {ad: "+30 gr ton balığı", fiyat: 40},
+            {ad: "extra doritos parçaları", fiyat: 30},
+            {ad: "+30 gr et parçaları", fiyat: 50},
+            {ad: "extra kaşar peyniri", fiyat: 30},
+            {ad: "+30 gr tavuk", fiyat: 40},
+            {ad: "+30 gr sosis", fiyat: 30},
+            {ad: "+30 gr mantar", fiyat: 40},
+            {ad: "+30 gr misket köfte", fiyat: 50},
+            {ad: "extra parmesan", fiyat: 40}
         ];
 
         function basla() {
@@ -561,26 +192,16 @@
                     kartCiro = data.kartCiro || 0;
                     nakitCiro = data.nakitCiro || 0;
                 }
-            } catch (error) {
-                console.log('Veri yükleme hatası');
-            }
+            } catch (error) { }
         }
 
         function verileriKaydet() {
             try {
-                var veri = {
-                    masalar: masalar,
-                    telefonlar: telefonlar,
-                    toplamMasa: toplamMasa,
-                    toplamTelefon: toplamTelefon,
-                    toplamCiro: toplamCiro,
-                    kartCiro: kartCiro,
-                    nakitCiro: nakitCiro
-                };
-                localStorage.setItem('restoranData', JSON.stringify(veri));
-            } catch (error) {
-                console.log('Veri kaydetme hatası');
-            }
+                localStorage.setItem('restoranData', JSON.stringify({
+                    masalar: masalar, telefonlar: telefonlar, toplamMasa: toplamMasa,
+                    toplamTelefon: toplamTelefon, toplamCiro: toplamCiro, kartCiro: kartCiro, nakitCiro: nakitCiro
+                }));
+            } catch (error) { }
         }
 
         function masalariGoster() {
@@ -610,19 +231,8 @@
             }
         }
 
-        function masaSec(no) {
-            secilen = no;
-            secilenTip = 'masa';
-            masalariGoster();
-            detayGoster();
-        }
-
-        function telefonSec(no) {
-            secilen = no;
-            secilenTip = 'telefon';
-            masalariGoster();
-            detayGoster();
-        }
+        function masaSec(no) { secilen = no; secilenTip = 'masa'; masalariGoster(); detayGoster(); }
+        function telefonSec(no) { secilen = no; secilenTip = 'telefon'; masalariGoster(); detayGoster(); }
 
         function detayGoster() {
             var container = document.getElementById('detayAlani');
@@ -630,29 +240,18 @@
             var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
             
             var html = '<h2 class="card-title">' + baslik + '</h2>';
-            
-            html += '<div class="siparis-form">';
-            html += '<div class="form-title">Yeni Sipariş Ekle</div>';
-            
-            html += '<div class="urun-dropdown">';
-            html += '<input type="text" id="urunAdi" placeholder="Ürün ara..." class="input" oninput="urunAra()" autocomplete="off">';
-            html += '<div id="urunListesi" class="urun-liste"></div>';
-            html += '</div>';
-            
-            html += '<div class="form-title">Boyut Seçin:</div>';
-            html += '<div class="boyut-container">';
+            html += '<div class="siparis-form"><div class="form-title">Yeni Sipariş Ekle</div>';
+            html += '<div class="urun-dropdown"><input type="text" id="urunAdi" placeholder="Ürün ara..." class="input" oninput="urunAra()" autocomplete="off"><div id="urunListesi" class="urun-liste"></div></div>';
+            html += '<div class="form-title">Boyut Seçin:</div><div class="boyut-container">';
             html += '<button type="button" class="boyut-btn" onclick="boyutSec(\'Büyük\', this)">Büyük</button>';
             html += '<button type="button" class="boyut-btn" onclick="boyutSec(\'Orta\', this)">Orta</button>';
-            html += '<button type="button" class="boyut-btn" onclick="boyutSec(\'Küçük\', this)">Küçük</button>';
-            html += '</div>';
-            
-            html += '<div class="input-row">';
-            html += '<input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input">';
-            html += '<input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input">';
-            html += '</div>';
+            html += '<button type="button" class="boyut-btn" onclick="boyutSec(\'Küçük\', this)">Küçük</button></div>';
+            html += '<div class="extras-container"><div class="form-title">Extra Ekle:</div>';
+            html += '<div class="extras-dropdown"><input type="text" id="extraAdi" placeholder="Extra ara..." class="input" oninput="extraAra()" autocomplete="off" style="border-color: #0ea5e9;"><div id="extraListesi" class="extras-liste"></div></div>';
+            html += '<div id="secilenExtrasAlani" class="secili-extras"></div></div>';
+            html += '<div class="input-row"><input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input"><input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input"></div>';
             html += '<input type="text" id="urunNot" placeholder="🗒️ Not ekle (isteğe bağlı)" class="input input-not">';
-            html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>';
-            html += '</div>';
+            html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button></div>';
             
             html += '<div class="siparisler"><div class="form-title">Siparişler</div>';
             if (veri.siparisler.length === 0) {
@@ -661,159 +260,131 @@
                 for (var i = 0; i < veri.siparisler.length; i++) {
                     var siparis = veri.siparisler[i];
                     var toplamFiyat = siparis.adet * siparis.birimFiyat;
-                    html += '<div class="siparis">';
-                    html += '<div class="siparis-info">';
+                    html += '<div class="siparis"><div class="siparis-info">';
                     html += '<div class="siparis-urun">' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div>';
                     html += '<div class="siparis-detay">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
+                    if (siparis.extralar && siparis.extralar.length > 0) html += '<div class="siparis-extras">Extralar: ' + siparis.extralar.join(', ') + '</div>';
                     if (siparis.not) html += '<div class="siparis-not">Not: ' + siparis.not + '</div>';
-                    html += '</div>';
-                    html += '<div class="siparis-fiyat">₺' + toplamFiyat.toFixed(2) + '</div>';
-                    html += '<button class="btn btn-danger" onclick="siparisSil(' + i + ')">Sil</button>';
-                    html += '</div>';
+                    html += '</div><div class="siparis-fiyat">₺' + toplamFiyat.toFixed(2) + '</div>';
+                    html += '<button class="btn btn-danger" onclick="siparisSil(' + i + ')">Sil</button></div>';
                 }
             }
             html += '</div>';
             
             if (veri.toplam > 0) {
-                html += '<div class="toplam-alan">';
-                html += '<div class="toplam-satir"><div class="toplam-label">TOPLAM:</div><div class="toplam-tutar">₺' + veri.toplam.toFixed(2) + '</div></div>';
+                html += '<div class="toplam-alan"><div class="toplam-satir"><div class="toplam-label">TOPLAM:</div><div class="toplam-tutar">₺' + veri.toplam.toFixed(2) + '</div></div>';
                 html += '<button class="btn btn-print" onclick="fisYazdir()">🖨️ Fiş Yazdır</button>';
-                html += '<div class="form-title">Ödeme Türü Seçin:</div>';
-                html += '<div class="odeme-secim">';
+                html += '<div class="form-title">Ödeme Türü Seçin:</div><div class="odeme-secim">';
                 html += '<div class="odeme-btn kart" onclick="odemeYap(\'kart\')">💳 Kart ile Öde</div>';
-                html += '<div class="odeme-btn nakit" onclick="odemeYap(\'nakit\')">💵 Nakit ile Öde</div>';
-                html += '</div></div>';
+                html += '<div class="odeme-btn nakit" onclick="odemeYap(\'nakit\')">💵 Nakit ile Öde</div></div></div>';
             }
-            
             container.innerHTML = html;
+            secilenExtrasGoster();
         }
 
         function urunAra() {
             var input = document.getElementById('urunAdi').value.toLowerCase();
             var liste = document.getElementById('urunListesi');
-            
-            if (input.length === 0) {
-                liste.style.display = 'none';
-                return;
-            }
-            
+            if (input.length === 0) { liste.style.display = 'none'; return; }
             var eslesenler = [];
             for (var i = 0; i < urunler.length; i++) {
-                if (urunler[i].toLowerCase().indexOf(input) !== -1) {
-                    eslesenler.push(urunler[i]);
-                }
+                if (urunler[i].toLowerCase().indexOf(input) !== -1) eslesenler.push(urunler[i]);
             }
-            
-            if (eslesenler.length === 0) {
-                liste.style.display = 'none';
-                return;
-            }
-            
+            if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
             var html = '';
             for (var i = 0; i < eslesenler.length; i++) {
                 html += '<div class="urun-item" onclick="urunSec(\'' + eslesenler[i] + '\')">' + eslesenler[i] + '</div>';
             }
+            liste.innerHTML = html; liste.style.display = 'block';
+        }
+
+        function extraAra() {
+            var input = document.getElementById('extraAdi').value.toLowerCase();
+            var liste = document.getElementById('extraListesi');
+            if (input.length === 0) { liste.style.display = 'none'; return; }
+            var eslesenler = [];
+            for (var i = 0; i < extralar.length; i++) {
+                if (extralar[i].ad.toLowerCase().indexOf(input) !== -1) {
+                    var mevcutMu = false;
+                    for (var j = 0; j < secilenExtras.length; j++) {
+                        if (secilenExtras[j].ad === extralar[i].ad) {
+                            mevcutMu = true;
+                            break;
+                        }
+                    }
+                    if (!mevcutMu) eslesenler.push(extralar[i]);
+                }
+            }
+            if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
+            var html = '';
+            for (var i = 0; i < eslesenler.length; i++) {
+                html += '<div class="extras-item" onclick="extraSec(\'' + eslesenler[i].ad + '\', ' + eslesenler[i].fiyat + ')"><span>' + eslesenler[i].ad + '</span><span>+₺' + eslesenler[i].fiyat + '</span></div>';
+            }
+            liste.innerHTML = html; liste.style.display = 'block';
+        }
+
+        function extraSec(extraAdi, extraFiyat) {
+            secilenExtras.push({ad: extraAdi, fiyat: extraFiyat});
+            document.getElementById('extraAdi').value = '';
+            document.getElementById('extraListesi').style.display = 'none';
+            secilenExtrasGoster();
+            fiyatGuncelle();
+        }
+
+        function extraCikar(index) {
+            secilenExtras.splice(index, 1);
+            secilenExtrasGoster();
+            fiyatGuncelle();
+        }
+
+        function secilenExtrasGoster() {
+            var container = document.getElementById('secilenExtrasAlani');
+            if (!container) return;
+            var html = '';
+            for (var i = 0; i < secilenExtras.length; i++) {
+                html += '<span class="extra-tag">' + secilenExtras[i].ad + ' (+₺' + secilenExtras[i].fiyat + ')<span class="remove" onclick="extraCikar(' + i + ')">×</span></span>';
+            }
+            container.innerHTML = html;
+        }
+
+        function fiyatGuncelle() {
+            var urun = document.getElementById('urunAdi').value;
+            var fiyatInput = document.getElementById('fiyat');
+            if (!fiyatInput) return;
             
-            liste.innerHTML = html;
-            liste.style.display = 'block';
+            var fiyatlar = {"pesto alfredo": 230, "köri alfredo": 200, "penne alfredo": 200, "ton ton": 220, "ton balıklı special": 230, "kremantar": 200, "napoliten": 180, "krepesto": 200, "dori penne": 210, "spagetti bolonez": 230, "4 peynirli": 210, "arabiata": 180, "sosili penne": 200, "lezzet harikası": 210, "kekikli": 200, "misket makarna": 230, "mexico penne": 190, "tantuni penne": 210, "çıtır": 210, "kırmızı orman": 210, "orman perisi": 210};
+            var baseFiyat = fiyatlar[urun] || parseFloat(fiyatInput.value) || 0;
+            
+            if (secilenBoyut && fiyatlar[urun]) {
+                if (secilenBoyut === 'Büyük') baseFiyat += 40;
+                else if (secilenBoyut === 'Orta') baseFiyat += 20;
+            }
+            
+            var extraToplam = 0;
+            for (var i = 0; i < secilenExtras.length; i++) {
+                extraToplam += secilenExtras[i].fiyat;
+            }
+            
+            fiyatInput.value = baseFiyat + extraToplam;
         }
 
         function urunSec(urun) {
             document.getElementById('urunAdi').value = urun;
             document.getElementById('urunListesi').style.display = 'none';
-            
-            // Fiyat listesi
-            var fiyatlar = {
-                "pesto alfredo": 230,
-                "köri alfredo": 200,
-                "penne alfredo": 200,
-                "ton ton": 220,
-                "ton balıklı special": 230,
-                "kremantar": 200,
-                "napoliten": 180,
-                "krepesto": 200,
-                "dori penne": 210,
-                "spagetti bolonez": 230,
-                "4 peynirli": 210,
-                "arabiata": 180,
-                "sosili penne": 200,
-                "lezzet harikası": 210,
-                "kekikli": 200,
-                "misket makarna": 230,
-                "mexico penne": 190,
-                "tantuni penne": 210,
-                "çıtır": 210,
-                "kırmızı orman": 210,
-                "orman perisi": 210
-            };
-            
-            // Fiyatı otomatik doldur
+            var fiyatlar = {"pesto alfredo": 230, "köri alfredo": 200, "penne alfredo": 200, "ton ton": 220, "ton balıklı special": 230, "kremantar": 200, "napoliten": 180, "krepesto": 200, "dori penne": 210, "spagetti bolonez": 230, "4 peynirli": 210, "arabiata": 180, "sosili penne": 200, "lezzet harikası": 210, "kekikli": 200, "misket makarna": 230, "mexico penne": 190, "tantuni penne": 210, "çıtır": 210, "kırmızı orman": 210, "orman perisi": 210};
             var fiyat = fiyatlar[urun];
-            if (fiyat) {
-                document.getElementById('fiyat').value = fiyat;
-            }
-            
-            // Boyut seçimini sıfırla
+            if (fiyat) document.getElementById('fiyat').value = fiyat;
             var buttons = document.querySelectorAll('.boyut-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
+            for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
             secilenBoyut = '';
+            fiyatGuncelle();
         }
 
         function boyutSec(boyut, btn) {
-            // Önceki seçimi kaldır
             var buttons = document.querySelectorAll('.boyut-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            
-            // Yeni seçimi işaretle
-            btn.classList.add('active');
-            secilenBoyut = boyut;
-            
-            // Fiyat listesi
-            var fiyatlar = {
-                "pesto alfredo": 230,
-                "köri alfredo": 200,
-                "penne alfredo": 200,
-                "ton ton": 220,
-                "ton balıklı special": 230,
-                "kremantar": 200,
-                "napoliten": 180,
-                "krepesto": 200,
-                "dori penne": 210,
-                "spagetti bolonez": 230,
-                "4 peynirli": 210,
-                "arabiata": 180,
-                "sosili penne": 200,
-                "lezzet harikası": 210,
-                "kekikli": 200,
-                "misket makarna": 230,
-                "mexico penne": 190,
-                "tantuni penne": 210,
-                "çıtır": 210,
-                "kırmızı orman": 210,
-                "orman perisi": 210
-            };
-            
-            // Fiyatı boyuta göre ayarla
-            var urun = document.getElementById('urunAdi').value;
-            var baseFiyat = fiyatlar[urun];
-            
-            if (baseFiyat) {
-                var yeniFiyat = baseFiyat;
-                
-                if (boyut === 'Büyük') {
-                    yeniFiyat = baseFiyat + 40;
-                } else if (boyut === 'Orta') {
-                    yeniFiyat = baseFiyat + 20;
-                } else if (boyut === 'Küçük') {
-                    yeniFiyat = baseFiyat; // Küçük = normal fiyat
-                }
-                
-                document.getElementById('fiyat').value = yeniFiyat;
-            }
+            for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+            btn.classList.add('active'); secilenBoyut = boyut;
+            fiyatGuncelle();
         }
 
         function siparisEkle() {
@@ -821,54 +392,48 @@
             var adet = parseInt(document.getElementById('adet').value) || 1;
             var birimFiyat = parseFloat(document.getElementById('fiyat').value);
             var not = document.getElementById('urunNot').value.trim();
+            if (!urun || adet <= 0 || birimFiyat <= 0) { alert('Lütfen tüm alanları doğru doldurun!'); return; }
             
-            if (!urun || adet <= 0 || birimFiyat <= 0) {
-                alert('Lütfen tüm alanları doğru doldurun!');
-                return;
+            var extralarAdlari = [];
+            for (var i = 0; i < secilenExtras.length; i++) {
+                extralarAdlari.push(secilenExtras[i].ad);
             }
-
-            var siparis = { urun: urun, adet: adet, birimFiyat: birimFiyat, not: not, boyut: secilenBoyut };
-            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
             
-            veri.siparisler.push(siparis);
-            veri.toplam += adet * birimFiyat;
-
+            var siparis = { urun: urun, adet: adet, birimFiyat: birimFiyat, not: not, boyut: secilenBoyut, extralar: extralarAdlari };
+            var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
+            veri.siparisler.push(siparis); veri.toplam += adet * birimFiyat;
+            
+            // Formu temizle
+            document.getElementById('urunAdi').value = '';
+            document.getElementById('adet').value = 1;
+            document.getElementById('fiyat').value = '';
+            document.getElementById('urunNot').value = '';
+            var buttons = document.querySelectorAll('.boyut-btn');
+            for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
             secilenBoyut = '';
-            masalariGoster();
-            detayGoster();
-            verileriKaydet();
+            secilenExtras = [];
+            
+            masalariGoster(); detayGoster(); verileriKaydet();
         }
 
         function siparisSil(index) {
             if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
                 var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
                 var siparis = veri.siparisler[index];
-                veri.toplam -= siparis.adet * siparis.birimFiyat;
-                veri.siparisler.splice(index, 1);
-                masalariGoster();
-                detayGoster();
-                verileriKaydet();
+                veri.toplam -= siparis.adet * siparis.birimFiyat; veri.siparisler.splice(index, 1);
+                masalariGoster(); detayGoster(); verileriKaydet();
             }
         }
 
         function odemeYap(tur) {
             var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
             var miktar = veri.toplam;
-            
             if (confirm(tur.toUpperCase() + ' ile ₺' + miktar.toFixed(2) + ' ödeme alındı olarak işaretlensin mi?')) {
                 if (secilenTip === 'masa') toplamMasa++; else toplamTelefon++;
-                toplamCiro += miktar;
-                if (tur === 'kart') kartCiro += miktar; else nakitCiro += miktar;
-                
-                veri.siparisler = [];
-                veri.toplam = 0;
-                secilen = null;
-                secilenTip = null;
-                
+                toplamCiro += miktar; if (tur === 'kart') kartCiro += miktar; else nakitCiro += miktar;
+                veri.siparisler = []; veri.toplam = 0; secilen = null; secilenTip = null;
                 document.getElementById('detayAlani').innerHTML = '<div class="bos-mesaj"><h3>Masa/Telefon Seçin</h3><p>Sipariş almak için bir masa veya telefon seçin</p></div>';
-                masalariGoster();
-                istatistikleriGuncelle();
-                verileriKaydet();
+                masalariGoster(); istatistikleriGuncelle(); verileriKaydet();
                 alert('✅ ' + tur.toUpperCase() + ' ödeme alındı!');
             }
         }
@@ -876,26 +441,20 @@
         function fisYazdir() {
             var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
             var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
-            
-            if (veri.siparisler.length === 0) {
-                alert('Sipariş yok!');
-                return;
-            }
-            
+            if (veri.siparisler.length === 0) { alert('Sipariş yok!'); return; }
             var tarih = new Date().toLocaleDateString('tr-TR');
             var saat = new Date().toLocaleTimeString('tr-TR');
             var fisNo = Date.now().toString().slice(-6);
-            
             var fisWindow = window.open('', '_blank', 'width=400,height=600');
             var fisHTML = '<!DOCTYPE html><html><head><title>Fiş</title><style>body{font-family:"Courier New",monospace;margin:0;padding:20px;line-height:1.6;}.header{text-align:center;border-bottom:1px solid #000;padding-bottom:1rem;margin-bottom:1rem;}.title{font-size:1.2rem;font-weight:bold;margin-bottom:1rem;text-decoration:underline;}.info{margin-bottom:0.3rem;}.items{border-bottom:1px solid #000;padding-bottom:0.5rem;margin-bottom:1rem;}.item-header{display:flex;justify-content:space-between;font-weight:bold;margin-bottom:0.5rem;}.item{margin-bottom:0.8rem;}.item-name{font-weight:bold;}.item-detail{color:#666;font-size:0.9rem;}.item-note{color:#8b5cf6;font-style:italic;font-size:0.9rem;}.item-price{text-align:right;font-weight:bold;margin-top:0.3rem;}@media print{body{margin:0;padding:10px;}}</style></head><body><div class="header"><div class="title">ADİSYON / HESAP FİŞİ</div><div class="info"><strong>' + baslik + '</strong></div><div class="info"><strong>Tarih:</strong> ' + tarih + '</div><div class="info"><strong>Saat:</strong> ' + saat + '</div><div class="info"><strong>Fiş No:</strong> ' + fisNo + '</div></div><div class="items"><div class="item-header"><span>ÜRÜN ADI</span><span>TUTAR</span></div>';
             
             for (var i = 0; i < veri.siparisler.length; i++) {
                 var siparis = veri.siparisler[i];
                 var toplamFiyat = siparis.adet * siparis.birimFiyat;
-                fisHTML += '<div class="item"><div class="item-name">' + (i + 1) + '. ' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div><div class="item-detail">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>' + (siparis.not ? '<div class="item-note">Not: ' + siparis.not + '</div>' : '') + '<div class="item-price">₺' + toplamFiyat.toFixed(2) + '</div></div>';
+                fisHTML += '<div class="item"><div class="item-name">' + (i + 1) + '. ' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div><div class="item-detail">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>' + (siparis.extralar && siparis.extralar.length > 0 ? '<div class="item-detail" style="color: #0ea5e9;">Extralar: ' + siparis.extralar.join(', ') + '</div>' : '') + (siparis.not ? '<div class="item-note">Not: ' + siparis.not + '</div>' : '') + '<div class="item-price">₺' + toplamFiyat.toFixed(2) + '</div></div>';
             }
             
-            fisHTML += '</div></body></html>';
+            fisHTML += '</div><div style="text-align:center;font-weight:bold;font-size:1.2rem;margin-top:1rem;">TOPLAM: ₺' + veri.toplam.toFixed(2) + '</div></body></html>';
             fisWindow.document.write(fisHTML);
             fisWindow.document.close();
             setTimeout(function() { fisWindow.print(); }, 500);
@@ -921,6 +480,18 @@
                 alert('✅ İstatistikler sıfırlandı!');
             }
         }
+
+        // Sayfa dışına tıklandığında dropdown'ları kapat
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.urun-dropdown')) {
+                var urunListesi = document.getElementById('urunListesi');
+                if (urunListesi) urunListesi.style.display = 'none';
+            }
+            if (!event.target.closest('.extras-dropdown')) {
+                var extraListesi = document.getElementById('extraListesi');
+                if (extraListesi) extraListesi.style.display = 'none';
+            }
+        });
 
         setTimeout(function() {
             basla();
