@@ -48,10 +48,18 @@
         .input:focus { outline: none; border-color: #3b82f6; }
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .input-not { background: #f0f8ff; border: 2px dashed #3b82f6; }
+        .adres-alani { background: #f0fdf4; border: 3px solid #16a34a; color: #16a34a; }
         .boyut-container { margin-bottom: 1rem; }
         .boyut-btn { display: inline-block; padding: 0.75rem 1.5rem; margin: 0 0.5rem 0.5rem 0; border: 2px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; font-weight: 500; transition: all 0.2s; }
         .boyut-btn:hover { border-color: #3b82f6; background: #f0f8ff; }
         .boyut-btn.active { border-color: #3b82f6; background: #3b82f6; color: white; }
+        .kategori-butonlar { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .kategori-btn { background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.2s; }
+        .kategori-btn:hover { background: #2563eb; }
+        .kategori-btn.active { background: #1d4ed8; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); }
+        .kategori-btn.icecek { background: #f59e0b; }
+        .kategori-btn.icecek:hover { background: #d97706; }
+        .kategori-btn.icecek.active { background: #b45309; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); }
         .urun-dropdown { position: relative; }
         .urun-liste { position: absolute; z-index: 1000; background: white; border: 2px solid #3b82f6; border-radius: 6px; max-height: 200px; overflow-y: auto; width: 100%; display: none; }
         .urun-item { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid #e5e7eb; transition: background-color 0.2s; }
@@ -67,13 +75,6 @@
         .extra-tag { display: inline-block; background: #0ea5e9; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin: 0.25rem; font-size: 0.9rem; position: relative; cursor: pointer; }
         .extra-tag .remove { margin-left: 0.5rem; font-weight: bold; }
         .extra-tag:hover { background: #0284c7; }
-        .kategori-butonlar { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .kategori-btn { background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.2s; }
-        .kategori-btn:hover { background: #2563eb; }
-        .kategori-btn.active { background: #1d4ed8; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); }
-        .kategori-btn.icecek { background: #f59e0b; }
-        .kategori-btn.icecek:hover { background: #d97706; }
-        .kategori-btn.icecek.active { background: #b45309; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); }
         .btn { padding: 1rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.2s; }
         .btn-primary { background: #3b82f6; color: white; width: 100%; }
         .btn-primary:hover { background: #2563eb; }
@@ -155,41 +156,28 @@
     </div>
 
     <script>
+        // Global değişkenler
         var masalar = {}, telefonlar = {}, secilen = null, secilenTip = null;
-        var toplamMasa = 0, toplamTelefon = 0, toplamCiro = 0, kartCiro = 0, nakitCiro = 0, secilenBoyut = '';
-        var secilenExtras = [];
-        var aktifKategori = 'makarna';
+        var toplamMasa = 0, toplamTelefon = 0, toplamCiro = 0, kartCiro = 0, nakitCiro = 0;
+        var aktifKategori = 'makarna', secilenBoyut = '', secilenExtras = [];
 
+        // Ürün ve extra listeleri
         var makarnalar = ["pesto alfredo", "köri alfredo", "penne alfredo", "ton ton", "ton balıklı special", "kremantar", "napoliten", "krepesto", "dori penne", "spagetti bolonez", "4 peynirli", "arabiata", "sosili penne", "lezzet harikası", "kekikli", "misket makarna", "mexico penne", "tantuni penne", "çıtır", "kırmızı orman", "orman perisi", "barbeki tavuk", "köri tavuk", "pesto tavuk", "4 peynir tavuk", "kremalı mantarlı tavuk", "kekikli tavuk", "kremantarlı tavuk", "sweet chili tavuk", "milanesse tavuk", "mexico tavuk"];
         
         var icecekler = [
-            {ad: "cola(33cl)", fiyat: 60},
-            {ad: "fanta(33cl)", fiyat: 60},
-            {ad: "cola(1lt)", fiyat: 100},
-            {ad: "cola(20cl)", fiyat: 50},
-            {ad: "sprite", fiyat: 60},
-            {ad: "ice tea mango", fiyat: 60},
-            {ad: "ice tea karpuz", fiyat: 60},
-            {ad: "ice tea şeftali", fiyat: 60},
-            {ad: "ice tea limon", fiyat: 60},
-            {ad: "ayran", fiyat: 50}
+            {ad: "cola(33cl)", fiyat: 60}, {ad: "fanta(33cl)", fiyat: 60}, {ad: "cola(1lt)", fiyat: 100}, {ad: "cola(20cl)", fiyat: 50}, {ad: "sprite", fiyat: 60},
+            {ad: "ice tea mango", fiyat: 60}, {ad: "ice tea karpuz", fiyat: 60}, {ad: "ice tea şeftali", fiyat: 60}, {ad: "ice tea limon", fiyat: 60}, {ad: "ayran", fiyat: 50}
         ];
 
         var extralar = [
-            {ad: "extra mozerella", fiyat: 30},
-            {ad: "extra mısır", fiyat: 30},
-            {ad: "extra chedar", fiyat: 30},
-            {ad: "+30 gr ton balığı", fiyat: 40},
-            {ad: "extra doritos parçaları", fiyat: 30},
-            {ad: "+30 gr et parçaları", fiyat: 50},
-            {ad: "extra kaşar peyniri", fiyat: 30},
-            {ad: "+30 gr tavuk", fiyat: 40},
-            {ad: "+30 gr sosis", fiyat: 30},
-            {ad: "+30 gr mantar", fiyat: 40},
-            {ad: "+30 gr misket köfte", fiyat: 50},
-            {ad: "extra parmesan", fiyat: 40}
+            {ad: "extra mozerella", fiyat: 30}, {ad: "extra mısır", fiyat: 30}, {ad: "extra chedar", fiyat: 30}, {ad: "+30 gr ton balığı", fiyat: 40},
+            {ad: "extra doritos parçaları", fiyat: 30}, {ad: "+30 gr et parçaları", fiyat: 50}, {ad: "extra kaşar peyniri", fiyat: 30}, {ad: "+30 gr tavuk", fiyat: 40},
+            {ad: "+30 gr sosis", fiyat: 30}, {ad: "+30 gr mantar", fiyat: 40}, {ad: "+30 gr misket köfte", fiyat: 50}, {ad: "extra parmesan", fiyat: 40}
         ];
 
+        var makarnaFiyatlari = {"pesto alfredo": 230, "köri alfredo": 200, "penne alfredo": 200, "ton ton": 220, "ton balıklı special": 230, "kremantar": 200, "napoliten": 180, "krepesto": 200, "dori penne": 210, "spagetti bolonez": 230, "4 peynirli": 210, "arabiata": 180, "sosili penne": 200, "lezzet harikası": 210, "kekikli": 200, "misket makarna": 230, "mexico penne": 190, "tantuni penne": 210, "çıtır": 210, "kırmızı orman": 210, "orman perisi": 210};
+
+        // Başlatma fonksiyonu
         function basla() {
             for (var i = 1; i <= 6; i++) {
                 masalar[i] = { siparisler: [], toplam: 0 };
@@ -200,6 +188,7 @@
             istatistikleriGuncelle();
         }
 
+        // Veri yönetimi
         function verileriYukle() {
             try {
                 var veri = localStorage.getItem('restoranData');
@@ -225,6 +214,7 @@
             } catch (error) { }
         }
 
+        // Masa ve telefon yönetimi
         function masalariGoster() {
             var container = document.getElementById('masalarGrid');
             container.innerHTML = '';
@@ -255,13 +245,20 @@
         function masaSec(no) { secilen = no; secilenTip = 'masa'; masalariGoster(); detayGoster(); }
         function telefonSec(no) { secilen = no; secilenTip = 'telefon'; masalariGoster(); detayGoster(); }
 
+        // Ana detay gösterme fonksiyonu
         function detayGoster() {
             var container = document.getElementById('detayAlani');
             var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
             var baslik = secilenTip === 'masa' ? 'Masa ' + secilen : 'Telefon ' + secilen;
             
             var html = '<h2 class="card-title">' + baslik + '</h2>';
-            html += '<div class="siparis-form"><div class="form-title">Yeni Sipariş Ekle</div>';
+            html += '<div class="siparis-form">';
+            html += '<div class="form-title">Yeni Sipariş Ekle</div>';
+            
+            // Telefon siparişlerinde adres alanı
+            if (secilenTip === 'telefon') {
+                html += '<input type="text" id="adresAlani" placeholder="📍 Teslimat Adresi" class="input adres-alani">';
+            }
             
             // Kategori butonları
             html += '<div class="kategori-butonlar">';
@@ -269,7 +266,7 @@
             html += '<button class="kategori-btn icecek' + (aktifKategori === 'icecek' ? ' active' : '') + '" onclick="kategoriSec(\'icecek\')">İçecek Ekle</button>';
             html += '</div>';
             
-            // Makarna kategori alanı
+            // Makarna alanı
             if (aktifKategori === 'makarna') {
                 html += '<div class="urun-dropdown"><input type="text" id="makarnaAdi" placeholder="Makarna ara..." class="input" oninput="makarnaAra()" autocomplete="off"><div id="makarnaListesi" class="urun-liste"></div></div>';
                 html += '<div class="form-title">Boyut Seçin:</div><div class="boyut-container">';
@@ -279,17 +276,19 @@
                 html += '<div class="extras-container"><div class="form-title">Extra Ekle:</div>';
                 html += '<div class="extras-dropdown"><input type="text" id="extraAdi" placeholder="Extra ara..." class="input" oninput="extraAra()" autocomplete="off" style="border-color: #0ea5e9;"><div id="extraListesi" class="extras-liste"></div></div>';
                 html += '<div id="secilenExtrasAlani" class="secili-extras"></div></div>';
+                html += '<div class="input-row"><input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input"><input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input"></div>';
+                html += '<input type="text" id="urunNot" placeholder="🗒️ Not ekle (isteğe bağlı)" class="input input-not">';
             }
             
-            // İçecek kategori alanı
+            // İçecek alanı (not kısmı yok)
             if (aktifKategori === 'icecek') {
                 html += '<div class="urun-dropdown"><input type="text" id="icecekAdi" placeholder="İçecek ara..." class="input" oninput="icecekAra()" autocomplete="off" style="border-color: #f59e0b;"><div id="icecekListesi" class="urun-liste" style="border-color: #f59e0b;"></div></div>';
+                html += '<div class="input-row"><input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input"><input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input"></div>';
             }
             
-            html += '<div class="input-row"><input type="number" id="adet" placeholder="Adet" value="1" min="1" class="input"><input type="number" id="fiyat" placeholder="Birim fiyat (₺)" step="0.01" min="0" class="input"></div>';
-            html += '<input type="text" id="urunNot" placeholder="🗒️ Not ekle (isteğe bağlı)" class="input input-not">';
             html += '<button class="btn btn-primary" onclick="siparisEkle()">Sipariş Ekle</button></div>';
             
+            // Siparişler listesi
             html += '<div class="siparisler"><div class="form-title">Siparişler</div>';
             if (veri.siparisler.length === 0) {
                 html += '<div class="siparis-yok">Henüz sipariş yok</div>';
@@ -301,6 +300,7 @@
                     html += '<div class="siparis-urun">' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div>';
                     html += '<div class="siparis-detay">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>';
                     if (siparis.extralar && siparis.extralar.length > 0) html += '<div class="siparis-extras">Extralar: ' + siparis.extralar.join(', ') + '</div>';
+                    if (siparis.adres) html += '<div class="siparis-extras">📍 Adres: ' + siparis.adres + '</div>';
                     if (siparis.not) html += '<div class="siparis-not">Not: ' + siparis.not + '</div>';
                     html += '</div><div class="siparis-fiyat">₺' + toplamFiyat.toFixed(2) + '</div>';
                     html += '<button class="btn btn-danger" onclick="siparisSil(' + i + ')">Sil</button></div>';
@@ -308,6 +308,7 @@
             }
             html += '</div>';
             
+            // Ödeme alanı
             if (veri.toplam > 0) {
                 html += '<div class="toplam-alan"><div class="toplam-satir"><div class="toplam-label">TOPLAM:</div><div class="toplam-tutar">₺' + veri.toplam.toFixed(2) + '</div></div>';
                 html += '<button class="btn btn-print" onclick="fisYazdir()">🖨️ Fiş Yazdır</button>';
@@ -315,28 +316,21 @@
                 html += '<div class="odeme-btn kart" onclick="odemeYap(\'kart\')">💳 Kart ile Öde</div>';
                 html += '<div class="odeme-btn nakit" onclick="odemeYap(\'nakit\')">💵 Nakit ile Öde</div></div></div>';
             }
+            
             container.innerHTML = html;
             secilenExtrasGoster();
         }
 
-        function kategoriSec(kategori) {
-            aktifKategori = kategori;
-            detayGoster();
-        }
+        // Kategori ve arama fonksiyonları
+        function kategoriSec(kategori) { aktifKategori = kategori; detayGoster(); }
 
         function makarnaAra() {
             var input = document.getElementById('makarnaAdi').value.toLowerCase();
             var liste = document.getElementById('makarnaListesi');
             if (input.length === 0) { liste.style.display = 'none'; return; }
-            var eslesenler = [];
-            for (var i = 0; i < makarnalar.length; i++) {
-                if (makarnalar[i].toLowerCase().indexOf(input) !== -1) eslesenler.push(makarnalar[i]);
-            }
+            var eslesenler = makarnalar.filter(function(m) { return m.toLowerCase().indexOf(input) !== -1; });
             if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
-            var html = '';
-            for (var i = 0; i < eslesenler.length; i++) {
-                html += '<div class="urun-item" onclick="makarnaSeç(\'' + eslesenler[i] + '\')">' + eslesenler[i] + '</div>';
-            }
+            var html = eslesenler.map(function(m) { return '<div class="urun-item" onclick="makarnaSeç(\'' + m + '\')">' + m + '</div>'; }).join('');
             liste.innerHTML = html; liste.style.display = 'block';
         }
 
@@ -344,23 +338,31 @@
             var input = document.getElementById('icecekAdi').value.toLowerCase();
             var liste = document.getElementById('icecekListesi');
             if (input.length === 0) { liste.style.display = 'none'; return; }
-            var eslesenler = [];
-            for (var i = 0; i < icecekler.length; i++) {
-                if (icecekler[i].ad.toLowerCase().indexOf(input) !== -1) eslesenler.push(icecekler[i]);
-            }
+            var eslesenler = icecekler.filter(function(i) { return i.ad.toLowerCase().indexOf(input) !== -1; });
             if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
-            var html = '';
-            for (var i = 0; i < eslesenler.length; i++) {
-                html += '<div class="urun-item" onclick="icecekSeç(\'' + eslesenler[i].ad + '\', ' + eslesenler[i].fiyat + ')">' + eslesenler[i].ad + ' - ₺' + eslesenler[i].fiyat + '</div>';
-            }
+            var html = eslesenler.map(function(i) { return '<div class="urun-item" onclick="icecekSeç(\'' + i.ad + '\', ' + i.fiyat + ')">' + i.ad + ' - ₺' + i.fiyat + '</div>'; }).join('');
             liste.innerHTML = html; liste.style.display = 'block';
         }
 
+        function extraAra() {
+            var input = document.getElementById('extraAdi').value.toLowerCase();
+            var liste = document.getElementById('extraListesi');
+            if (input.length === 0) { liste.style.display = 'none'; return; }
+            var eslesenler = extralar.filter(function(e) { 
+                if (e.ad.toLowerCase().indexOf(input) === -1) return false;
+                return !secilenExtras.some(function(se) { return se.ad === e.ad; });
+            });
+            if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
+            var html = eslesenler.map(function(e) { return '<div class="extras-item" onclick="extraSec(\'' + e.ad + '\', ' + e.fiyat + ')"><span>' + e.ad + '</span><span>+₺' + e.fiyat + '</span></div>'; }).join('');
+            liste.innerHTML = html; liste.style.display = 'block';
+        }
+
+        // Ürün seçim fonksiyonları
         function makarnaSeç(makarna) {
             document.getElementById('makarnaAdi').value = makarna;
             document.getElementById('makarnaListesi').style.display = 'none';
-            var fiyatlar = {"pesto alfredo": 230, "köri alfredo": 200, "penne alfredo": 200, "ton ton": 220, "ton balıklı special": 230, "kremantar": 200, "napoliten": 180, "krepesto": 200, "dori penne": 210, "spagetti bolonez": 230, "4 peynirli": 210, "arabiata": 180, "sosili penne": 200, "lezzet harikası": 210, "kekikli": 200, "misket makarna": 230, "mexico penne": 190, "tantuni penne": 210, "çıtır": 210, "kırmızı orman": 210, "orman perisi": 210};
-            var fiyat = fiyatlar[makarna];
+            var fiyat = makarnaFiyatlari[makarna];
+            if (secilenTip === 'telefon') fiyat += 20; // Telefon siparişlerinde +20 TL
             if (fiyat) document.getElementById('fiyat').value = fiyat;
             var buttons = document.querySelectorAll('.boyut-btn');
             for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
@@ -372,32 +374,6 @@
             document.getElementById('icecekAdi').value = icecek;
             document.getElementById('icecekListesi').style.display = 'none';
             document.getElementById('fiyat').value = fiyat;
-            secilenExtras = [];
-        }
-
-        function extraAra() {
-            var input = document.getElementById('extraAdi').value.toLowerCase();
-            var liste = document.getElementById('extraListesi');
-            if (input.length === 0) { liste.style.display = 'none'; return; }
-            var eslesenler = [];
-            for (var i = 0; i < extralar.length; i++) {
-                if (extralar[i].ad.toLowerCase().indexOf(input) !== -1) {
-                    var mevcutMu = false;
-                    for (var j = 0; j < secilenExtras.length; j++) {
-                        if (secilenExtras[j].ad === extralar[i].ad) {
-                            mevcutMu = true;
-                            break;
-                        }
-                    }
-                    if (!mevcutMu) eslesenler.push(extralar[i]);
-                }
-            }
-            if (eslesenler.length === 0) { liste.style.display = 'none'; return; }
-            var html = '';
-            for (var i = 0; i < eslesenler.length; i++) {
-                html += '<div class="extras-item" onclick="extraSec(\'' + eslesenler[i].ad + '\', ' + eslesenler[i].fiyat + ')"><span>' + eslesenler[i].ad + '</span><span>+₺' + eslesenler[i].fiyat + '</span></div>';
-            }
-            liste.innerHTML = html; liste.style.display = 'block';
         }
 
         function extraSec(extraAdi, extraFiyat) {
@@ -417,11 +393,18 @@
         function secilenExtrasGoster() {
             var container = document.getElementById('secilenExtrasAlani');
             if (!container) return;
-            var html = '';
-            for (var i = 0; i < secilenExtras.length; i++) {
-                html += '<span class="extra-tag">' + secilenExtras[i].ad + ' (+₺' + secilenExtras[i].fiyat + ')<span class="remove" onclick="extraCikar(' + i + ')">×</span></span>';
-            }
+            var html = secilenExtras.map(function(e, i) { 
+                return '<span class="extra-tag">' + e.ad + ' (+₺' + e.fiyat + ')<span class="remove" onclick="extraCikar(' + i + ')">×</span></span>'; 
+            }).join('');
             container.innerHTML = html;
+        }
+
+        function boyutSec(boyut, btn) {
+            var buttons = document.querySelectorAll('.boyut-btn');
+            for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+            btn.classList.add('active'); 
+            secilenBoyut = boyut;
+            fiyatGuncelle();
         }
 
         function fiyatGuncelle() {
@@ -429,64 +412,46 @@
             var fiyatInput = document.getElementById('fiyat');
             if (!fiyatInput || !makarna) return;
             
-            var fiyatlar = {"pesto alfredo": 230, "köri alfredo": 200, "penne alfredo": 200, "ton ton": 220, "ton balıklı special": 230, "kremantar": 200, "napoliten": 180, "krepesto": 200, "dori penne": 210, "spagetti bolonez": 230, "4 peynirli": 210, "arabiata": 180, "sosili penne": 200, "lezzet harikası": 210, "kekikli": 200, "misket makarna": 230, "mexico penne": 190, "tantuni penne": 210, "çıtır": 210, "kırmızı orman": 210, "orman perisi": 210};
-            var baseFiyat = fiyatlar[makarna] || parseFloat(fiyatInput.value) || 0;
+            var baseFiyat = makarnaFiyatlari[makarna] || 0;
+            if (secilenTip === 'telefon') baseFiyat += 20; // Telefon siparişlerinde +20 TL
             
-            if (secilenBoyut && fiyatlar[makarna]) {
+            if (secilenBoyut && makarnaFiyatlari[makarna]) {
                 if (secilenBoyut === 'Büyük') baseFiyat += 40;
                 else if (secilenBoyut === 'Orta') baseFiyat += 20;
             }
             
-            var extraToplam = 0;
-            for (var i = 0; i < secilenExtras.length; i++) {
-                extraToplam += secilenExtras[i].fiyat;
-            }
-            
+            var extraToplam = secilenExtras.reduce(function(sum, e) { return sum + e.fiyat; }, 0);
             fiyatInput.value = baseFiyat + extraToplam;
         }
 
-        function boyutSec(boyut, btn) {
-            var buttons = document.querySelectorAll('.boyut-btn');
-            for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
-            btn.classList.add('active'); secilenBoyut = boyut;
-            fiyatGuncelle();
-        }
-
+        // Sipariş ekleme
         function siparisEkle() {
-            var makarna = '';
-            var icecek = '';
-            
-            if (aktifKategori === 'makarna' && document.getElementById('makarnaAdi')) {
-                makarna = document.getElementById('makarnaAdi').value.trim();
-            } else if (aktifKategori === 'icecek' && document.getElementById('icecekAdi')) {
-                icecek = document.getElementById('icecekAdi').value.trim();
-            }
-            
+            var makarna = aktifKategori === 'makarna' && document.getElementById('makarnaAdi') ? document.getElementById('makarnaAdi').value.trim() : '';
+            var icecek = aktifKategori === 'icecek' && document.getElementById('icecekAdi') ? document.getElementById('icecekAdi').value.trim() : '';
             var urun = makarna || icecek;
             var adet = parseInt(document.getElementById('adet').value) || 1;
             var birimFiyat = parseFloat(document.getElementById('fiyat').value);
-            var not = document.getElementById('urunNot').value.trim();
+            var not = aktifKategori === 'makarna' && document.getElementById('urunNot') ? document.getElementById('urunNot').value.trim() : '';
+            var adres = secilenTip === 'telefon' && document.getElementById('adresAlani') ? document.getElementById('adresAlani').value.trim() : '';
+            
             if (!urun || adet <= 0 || birimFiyat <= 0) { alert('Lütfen tüm alanları doğru doldurun!'); return; }
             
-            var extralarAdlari = [];
-            for (var i = 0; i < secilenExtras.length; i++) {
-                extralarAdlari.push(secilenExtras[i].ad);
-            }
-            
-            var siparis = { urun: urun, adet: adet, birimFiyat: birimFiyat, not: not, boyut: secilenBoyut, extralar: extralarAdlari };
+            var extralarAdlari = secilenExtras.map(function(e) { return e.ad; });
+            var siparis = { urun: urun, adet: adet, birimFiyat: birimFiyat, not: not, adres: adres, boyut: secilenBoyut, extralar: extralarAdlari };
             var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
-            veri.siparisler.push(siparis); veri.toplam += adet * birimFiyat;
+            veri.siparisler.push(siparis); 
+            veri.toplam += adet * birimFiyat;
             
             // Formu temizle
             if (document.getElementById('makarnaAdi')) document.getElementById('makarnaAdi').value = '';
             if (document.getElementById('icecekAdi')) document.getElementById('icecekAdi').value = '';
+            if (document.getElementById('adresAlani')) document.getElementById('adresAlani').value = '';
             document.getElementById('adet').value = 1;
             document.getElementById('fiyat').value = '';
-            document.getElementById('urunNot').value = '';
+            if (document.getElementById('urunNot')) document.getElementById('urunNot').value = '';
             var buttons = document.querySelectorAll('.boyut-btn');
             for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
-            secilenBoyut = '';
-            secilenExtras = [];
+            secilenBoyut = ''; secilenExtras = [];
             
             masalariGoster(); detayGoster(); verileriKaydet();
         }
@@ -495,7 +460,8 @@
             if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
                 var veri = secilenTip === 'masa' ? masalar[secilen] : telefonlar[secilen];
                 var siparis = veri.siparisler[index];
-                veri.toplam -= siparis.adet * siparis.birimFiyat; veri.siparisler.splice(index, 1);
+                veri.toplam -= siparis.adet * siparis.birimFiyat; 
+                veri.siparisler.splice(index, 1);
                 masalariGoster(); detayGoster(); verileriKaydet();
             }
         }
@@ -505,7 +471,8 @@
             var miktar = veri.toplam;
             if (confirm(tur.toUpperCase() + ' ile ₺' + miktar.toFixed(2) + ' ödeme alındı olarak işaretlensin mi?')) {
                 if (secilenTip === 'masa') toplamMasa++; else toplamTelefon++;
-                toplamCiro += miktar; if (tur === 'kart') kartCiro += miktar; else nakitCiro += miktar;
+                toplamCiro += miktar; 
+                if (tur === 'kart') kartCiro += miktar; else nakitCiro += miktar;
                 veri.siparisler = []; veri.toplam = 0; secilen = null; secilenTip = null;
                 document.getElementById('detayAlani').innerHTML = '<div class="bos-mesaj"><h3>Masa/Telefon Seçin</h3><p>Sipariş almak için bir masa veya telefon seçin</p></div>';
                 masalariGoster(); istatistikleriGuncelle(); verileriKaydet();
@@ -526,7 +493,7 @@
             for (var i = 0; i < veri.siparisler.length; i++) {
                 var siparis = veri.siparisler[i];
                 var toplamFiyat = siparis.adet * siparis.birimFiyat;
-                fisHTML += '<div class="item"><div class="item-name">' + (i + 1) + '. ' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div><div class="item-detail">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>' + (siparis.extralar && siparis.extralar.length > 0 ? '<div class="item-detail" style="color: #0ea5e9;">Extralar: ' + siparis.extralar.join(', ') + '</div>' : '') + (siparis.not ? '<div class="item-note">Not: ' + siparis.not + '</div>' : '') + '<div class="item-price">₺' + toplamFiyat.toFixed(2) + '</div></div>';
+                fisHTML += '<div class="item"><div class="item-name">' + (i + 1) + '. ' + siparis.urun + (siparis.boyut ? ' (' + siparis.boyut + ')' : '') + '</div><div class="item-detail">' + siparis.adet + ' adet × ₺' + siparis.birimFiyat.toFixed(2) + '</div>' + (siparis.extralar && siparis.extralar.length > 0 ? '<div class="item-detail" style="color: #0ea5e9;">Extralar: ' + siparis.extralar.join(', ') + '</div>' : '') + (siparis.adres ? '<div class="item-detail" style="color: #16a34a;">Adres: ' + siparis.adres + '</div>' : '') + (siparis.not ? '<div class="item-note">Not: ' + siparis.not + '</div>' : '') + '<div class="item-price">₺' + toplamFiyat.toFixed(2) + '</div></div>';
             }
             
             fisHTML += '</div><div style="text-align:center;font-weight:bold;font-size:1.2rem;margin-top:1rem;">TOPLAM: ₺' + veri.toplam.toFixed(2) + '</div></body></html>';
@@ -536,9 +503,8 @@
         }
 
         function istatistikleriGuncelle() {
-            var bekleyenMasa = 0, bekleyenTelefon = 0;
-            for (var i in masalar) bekleyenMasa += masalar[i].toplam;
-            for (var i in telefonlar) bekleyenTelefon += telefonlar[i].toplam;
+            var bekleyenMasa = Object.values(masalar).reduce(function(sum, m) { return sum + m.toplam; }, 0);
+            var bekleyenTelefon = Object.values(telefonlar).reduce(function(sum, t) { return sum + t.toplam; }, 0);
             var tumCiro = toplamCiro + bekleyenMasa + bekleyenTelefon;
             
             document.getElementById('masaSayisi').textContent = toplamMasa;
@@ -556,7 +522,7 @@
             }
         }
 
-        // Sayfa dışına tıklandığında dropdown'ları kapat
+        // Event listeners
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.urun-dropdown')) {
                 var makarnaListesi = document.getElementById('makarnaListesi');
@@ -570,6 +536,7 @@
             }
         });
 
+        // Başlatma
         setTimeout(function() {
             basla();
             setInterval(verileriKaydet, 5000);
