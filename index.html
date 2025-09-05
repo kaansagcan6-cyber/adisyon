@@ -721,15 +721,99 @@
         function urunSec(urun) {
             document.getElementById('urunAdi').value = urun;
             document.getElementById('urunListesi').style.display = 'none';
-        }
-
-        function boyutSec(boyut, btn) {
+            
+            // Fiyat listesi
+            var fiyatlar = {
+                "pesto alfredo": 230,
+                "köri alfredo": 200,
+                "penne alfredo": 200,
+                "ton ton": 220,
+                "ton balıklı special": 230,
+                "kremantar": 200,
+                "napoliten": 180,
+                "krepesto": 200,
+                "dori penne": 210,
+                "spagetti bolonez": 230,
+                "4 peynirli": 210,
+                "arabiata": 180,
+                "sosili penne": 200,
+                "lezzet harikası": 210,
+                "kekikli": 200,
+                "misket makarna": 230,
+                "mexico penne": 190,
+                "tantuni penne": 210,
+                "çıtır": 210,
+                "kırmızı orman": 210,
+                "orman perisi": 210
+            };
+            
+            // Fiyatı otomatik doldur
+            var fiyat = fiyatlar[urun];
+            if (fiyat) {
+                document.getElementById('fiyat').value = fiyat;
+            }
+            
+            // Boyut seçimini sıfırla
             var buttons = document.querySelectorAll('.boyut-btn');
             for (var i = 0; i < buttons.length; i++) {
                 buttons[i].classList.remove('active');
             }
+            secilenBoyut = '';
+        }
+
+        function boyutSec(boyut, btn) {
+            // Önceki seçimi kaldır
+            var buttons = document.querySelectorAll('.boyut-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            
+            // Yeni seçimi işaretle
             btn.classList.add('active');
             secilenBoyut = boyut;
+            
+            // Fiyat listesi
+            var fiyatlar = {
+                "pesto alfredo": 230,
+                "köri alfredo": 200,
+                "penne alfredo": 200,
+                "ton ton": 220,
+                "ton balıklı special": 230,
+                "kremantar": 200,
+                "napoliten": 180,
+                "krepesto": 200,
+                "dori penne": 210,
+                "spagetti bolonez": 230,
+                "4 peynirli": 210,
+                "arabiata": 180,
+                "sosili penne": 200,
+                "lezzet harikası": 210,
+                "kekikli": 200,
+                "misket makarna": 230,
+                "mexico penne": 190,
+                "tantuni penne": 210,
+                "çıtır": 210,
+                "kırmızı orman": 210,
+                "orman perisi": 210
+            };
+            
+            // Fiyatı boyuta göre ayarla
+            var urun = document.getElementById('urunAdi').value;
+            var baseFiyat = fiyatlar[urun];
+            
+            if (baseFiyat) {
+                var yeniFiyat = baseFiyat;
+                
+                if (boyut === 'Büyük') {
+                    yeniFiyat = baseFiyat + 40;
+                } else if (boyut === 'Orta') {
+                    yeniFiyat = baseFiyat + 20;
+                } else if (boyut === 'Küçük') {
+                    yeniFiyat = baseFiyat; // Küçük = normal fiyat
+                }
+                
+                document.getElementById('fiyat').value = yeniFiyat;
+            }
         }
 
         function siparisEkle() {
