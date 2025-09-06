@@ -138,6 +138,33 @@
         .extra-info { color: #0ea5e9; }
         .note-info { color: #8b5cf6; font-style: italic; }
         .empty-history { text-align: center; padding: 2rem; color: #6b7280; }
+
+        /* Yeni eklenen stiller - Aylık İstatistikler */
+        .monthly-stats-container { background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 2rem; margin-top: 2rem; }
+        .month-buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .month-btn { padding: 1rem; border: 2px solid #3b82f6; border-radius: 8px; background: white; color: #3b82f6; cursor: pointer; font-weight: bold; text-align: center; transition: all 0.2s; }
+        .month-btn:hover { background: #f0f8ff; }
+        .month-btn.active { background: #3b82f6; color: white; }
+        .monthly-data { background: #f8fafc; border-radius: 8px; padding: 1.5rem; }
+        .monthly-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .monthly-summary-item { background: white; border-radius: 8px; padding: 1rem; text-align: center; border: 2px solid; }
+        .monthly-summary-item.total { border-color: #16a34a; }
+        .monthly-summary-item.makarna { border-color: #3b82f6; }
+        .monthly-summary-item.icecek { border-color: #f59e0b; }
+        .monthly-summary-value { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .monthly-summary-item.total .monthly-summary-value { color: #16a34a; }
+        .monthly-summary-item.makarna .monthly-summary-value { color: #3b82f6; }
+        .monthly-summary-item.icecek .monthly-summary-value { color: #f59e0b; }
+        .monthly-summary-label { font-weight: 500; }
+        .monthly-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        .monthly-table th, .monthly-table td { padding: 0.75rem; text-align: center; border-bottom: 1px solid #e5e7eb; }
+        .monthly-table th { background: #f1f5f9; font-weight: bold; color: #334155; }
+        .monthly-table tr:hover { background: #f8fafc; }
+        .day-cell { font-weight: bold; color: #1e40af; }
+        .total-cell { color: #16a34a; font-weight: bold; }
+        .makarna-cell { color: #3b82f6; }
+        .icecek-cell { color: #f59e0b; }
+        .no-data { text-align: center; padding: 2rem; color: #6b7280; }
     </style>
 </head>
 <body>
@@ -217,6 +244,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Yeni eklenen aylık istatistik bölümü -->
+        <div class="monthly-stats-container">
+            <h2 class="card-title">📅 Aylık Satış İstatistikleri</h2>
+            
+            <div class="month-buttons">
+                <button class="month-btn" onclick="aylikIstatistikGoster(0)" data-month="0">Ocak</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(1)" data-month="1">Şubat</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(2)" data-month="2">Mart</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(3)" data-month="3">Nisan</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(4)" data-month="4">Mayıs</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(5)" data-month="5">Haziran</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(6)" data-month="6">Temmuz</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(7)" data-month="7">Ağustos</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(8)" data-month="8">Eylül</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(9)" data-month="9">Ekim</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(10)" data-month="10">Kasım</button>
+                <button class="month-btn" onclick="aylikIstatistikGoster(11)" data-month="11">Aralık</button>
+            </div>
+
+            <div class="monthly-data" id="aylikVeri">
+                <div class="no-data">Görüntülemek istediğiniz ayı seçin</div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -236,6 +287,10 @@
         var gecmisSiparisler = [];
         var toplamMakarna = 0;
         var toplamIcecek = 0;
+
+        // Yeni eklenen değişkenler - Aylık istatistikler
+        var aylikIstatistikler = {};
+        var seciliAy = null;
 
         var makarnalar = ["pesto alfredo", "köri alfredo", "penne alfredo", "ton ton", "ton balıklı special", "kremantar", "napoliten", "krepesto", "dori penne", "spagetti bolonez", "4 peynirli", "arabiata", "sosili penne", "lezzet harikası", "kekikli", "misket makarna", "mexico penne", "tantuni penne", "çıtır", "kırmızı orman", "orman perisi", "barbeki tavuk", "köri tavuk", "pesto tavuk", "4 peynir tavuk", "kremalı mantarlı tavuk", "kekikli tavuk", "kremantarlı tavuk", "sweet chili tavuk", "milanesse tavuk", "mexico tavuk"];
         
@@ -297,6 +352,8 @@
                     gecmisSiparisler = data.gecmisSiparisler || [];
                     toplamMakarna = data.toplamMakarna || 0;
                     toplamIcecek = data.toplamIcecek || 0;
+                    // Yeni eklenen - Aylık istatistikleri yükle
+                    aylikIstatistikler = data.aylikIstatistikler || {};
                 }
             } catch (error) {
                 console.log('Veri yükleme hatası:', error);
@@ -316,7 +373,9 @@
                     yemekKartiCiro: yemekKartiCiro,
                     gecmisSiparisler: gecmisSiparisler,
                     toplamMakarna: toplamMakarna,
-                    toplamIcecek: toplamIcecek
+                    toplamIcecek: toplamIcecek,
+                    // Yeni eklenen - Aylık istatistikleri kaydet
+                    aylikIstatistikler: aylikIstatistikler
                 }));
             } catch (error) {
                 console.log('Veri kaydetme hatası:', error);
@@ -740,8 +799,43 @@
             }
         }
 
+        // Yeni eklenen fonksiyon - Günlük istatistikleri kaydet
+        function gunlukIstatistikKaydet() {
+            var bugun = new Date();
+            var yil = bugun.getFullYear();
+            var ay = bugun.getMonth();
+            var gun = bugun.getDate();
+            
+            // Aylık istatistikler objesini oluştur
+            if (!aylikIstatistikler[yil]) {
+                aylikIstatistikler[yil] = {};
+            }
+            if (!aylikIstatistikler[yil][ay]) {
+                aylikIstatistikler[yil][ay] = {};
+            }
+            
+            // O günün istatistiklerini kaydet
+            aylikIstatistikler[yil][ay][gun] = {
+                toplamCiro: toplamCiro,
+                kartCiro: kartCiro,
+                nakitCiro: nakitCiro,
+                yemekKartiCiro: yemekKartiCiro,
+                toplamMakarna: toplamMakarna,
+                toplamIcecek: toplamIcecek,
+                toplamMasa: toplamMasa,
+                toplamTelefon: toplamTelefon,
+                tarih: bugun.toLocaleDateString('tr-TR')
+            };
+            
+            verileriKaydet();
+        }
+
         function sifirla() {
             if (confirm('⚠️ Tüm istatistikler sıfırlanacak!\n\nDevam etmek istiyor musunuz?')) {
+                // Önce günlük istatistikleri kaydet
+                gunlukIstatistikKaydet();
+                
+                // Sonra günlük istatistikleri sıfırla
                 toplamMasa = 0; 
                 toplamTelefon = 0; 
                 toplamCiro = 0; 
@@ -754,8 +848,95 @@
                 istatistikleriGuncelle(); 
                 gecmisSiparisleriGoster(); 
                 verileriKaydet();
-                alert('✅ İstatistikler sıfırlandı!');
+                alert('✅ İstatistikler sıfırlandı ve günlük veri kaydedildi!');
             }
+        }
+
+        // Yeni eklenen fonksiyon - Aylık istatistik göster
+        function aylikIstatistikGoster(ayIndex) {
+            seciliAy = ayIndex;
+            
+            // Buton aktif durumunu güncelle
+            var buttons = document.querySelectorAll('.month-btn');
+            buttons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-month="' + ayIndex + '"]').classList.add('active');
+            
+            var container = document.getElementById('aylikVeri');
+            var bugun = new Date();
+            var yil = bugun.getFullYear();
+            
+            // O ayın verilerini kontrol et
+            if (!aylikIstatistikler[yil] || !aylikIstatistikler[yil][ayIndex]) {
+                container.innerHTML = '<div class="no-data">Bu ay için henüz veri yok</div>';
+                return;
+            }
+            
+            var ayVeri = aylikIstatistikler[yil][ayIndex];
+            var ayAdlari = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 
+                           'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+            
+            // Aylık toplam hesapla
+            var aylikToplam = {
+                toplamCiro: 0,
+                toplamMakarna: 0,
+                toplamIcecek: 0
+            };
+            
+            Object.values(ayVeri).forEach(function(gunVeri) {
+                aylikToplam.toplamCiro += gunVeri.toplamCiro || 0;
+                aylikToplam.toplamMakarna += gunVeri.toplamMakarna || 0;
+                aylikToplam.toplamIcecek += gunVeri.toplamIcecek || 0;
+            });
+            
+            var html = '<h3 style="margin-bottom: 1.5rem; color: #333;">' + ayAdlari[ayIndex] + ' ' + yil + ' Satış Raporu</h3>';
+            
+            // Aylık özet
+            html += '<div class="monthly-summary">';
+            html += '<div class="monthly-summary-item total">';
+            html += '<div class="monthly-summary-value">₺' + aylikToplam.toplamCiro.toFixed(2) + '</div>';
+            html += '<div class="monthly-summary-label">Toplam Ciro</div>';
+            html += '</div>';
+            html += '<div class="monthly-summary-item makarna">';
+            html += '<div class="monthly-summary-value">' + aylikToplam.toplamMakarna + '</div>';
+            html += '<div class="monthly-summary-label">Toplam Makarna</div>';
+            html += '</div>';
+            html += '<div class="monthly-summary-item icecek">';
+            html += '<div class="monthly-summary-value">' + aylikToplam.toplamIcecek + '</div>';
+            html += '<div class="monthly-summary-label">Toplam İçecek</div>';
+            html += '</div>';
+            html += '</div>';
+            
+            // Günlük detay tablosu
+            html += '<table class="monthly-table">';
+            html += '<thead><tr>';
+            html += '<th>Gün</th>';
+            html += '<th>Toplam Ciro</th>';
+            html += '<th>Makarna Satış</th>';
+            html += '<th>İçecek Satış</th>';
+            html += '<th>Masa Sayısı</th>';
+            html += '<th>Telefon Sayısı</th>';
+            html += '</tr></thead><tbody>';
+            
+            // Günleri sıralı şekilde göster
+            var gunler = Object.keys(ayVeri).sort(function(a, b) { return parseInt(a) - parseInt(b); });
+            
+            gunler.forEach(function(gun) {
+                var gunVeri = ayVeri[gun];
+                html += '<tr>';
+                html += '<td class="day-cell">' + gun + '</td>';
+                html += '<td class="total-cell">₺' + (gunVeri.toplamCiro || 0).toFixed(2) + '</td>';
+                html += '<td class="makarna-cell">' + (gunVeri.toplamMakarna || 0) + '</td>';
+                html += '<td class="icecek-cell">' + (gunVeri.toplamIcecek || 0) + '</td>';
+                html += '<td>' + (gunVeri.toplamMasa || 0) + '</td>';
+                html += '<td>' + (gunVeri.toplamTelefon || 0) + '</td>';
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            
+            container.innerHTML = html;
         }
 
         function gecmisSiparisleriGoster() {
